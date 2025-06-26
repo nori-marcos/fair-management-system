@@ -1,5 +1,5 @@
 # Usa a imagem com Java 24 (usando Eclipse Temurin, builds oficiais da Adoptium)
-FROM eclipse-temurin:24-jdk-jammy
+FROM eclipse-temurin:21-jdk-jammy
 
 # Cria diretório de trabalho
 WORKDIR /app
