@@ -1,4 +1,4 @@
-package com.unb.fair_management_system.config;
+package com.unb.fair_management_system.starter.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

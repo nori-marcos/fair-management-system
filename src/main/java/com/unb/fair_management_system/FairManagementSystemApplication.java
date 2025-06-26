@@ -1,6 +1,6 @@
 package com.unb.fair_management_system;
 
-import com.unb.fair_management_system.config.EnvConfig;
+import com.unb.fair_management_system.starter.config.EnvConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
