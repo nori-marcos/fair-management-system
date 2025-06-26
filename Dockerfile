@@ -14,4 +14,4 @@ RUN chmod +x ./mvnw
 RUN ./mvnw clean package -DskipTests
 
 # Executa o JAR gerado
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["java", "-jar", "target/fair-management-system-0.0.1-SNAPSHOT.jar"]
