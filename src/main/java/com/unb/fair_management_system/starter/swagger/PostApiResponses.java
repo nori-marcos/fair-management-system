@@ -1,7 +1,9 @@
-package com.unb.fair_management_system.starter.config.swagger;
+package com.unb.fair_management_system.starter.swagger;
 
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,8 +13,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @BaseApiResponses
-@ApiResponse(responseCode = "200", content = @Content)
+@ApiResponse(responseCode = "201")
 @ApiResponse(responseCode = "202", content = @Content)
 @ApiResponse(responseCode = "204", content = @Content)
-public @interface DefaultApiResponses {
+@ResponseStatus(HttpStatus.CREATED)
+public @interface PostApiResponses {
 }

@@ -1,4 +1,4 @@
-package com.unb.fair_management_system.starter.config.swagger;
+package com.unb.fair_management_system.starter.swagger;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
