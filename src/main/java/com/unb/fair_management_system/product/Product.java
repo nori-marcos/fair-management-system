@@ -1,6 +1,7 @@
 package com.unb.fair_management_system.product;
 
 import com.unb.fair_management_system.exhibitor.Exhibitor;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -9,8 +10,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,20 +25,32 @@ import lombok.NoArgsConstructor;
 @Table(name = "products")
 public class Product {
   @Id @GeneratedValue private UUID id;
-  @NotBlank private String name;
-  @NotBlank private String description;
-  @NotNull @PositiveOrZero private BigDecimal price;
-  @NotNull private LocalDateTime createDate;
+
+  @Column(nullable = false)
+  private String name;
+
+  @Column(nullable = false)
+  private String description;
+
+  @Column(nullable = false)
+  @PositiveOrZero
+  private BigDecimal price;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "exhibitor_id", nullable = false)
   private Exhibitor exhibitor;
 
-  @NotNull private String createdBy;
+  @Column(nullable = false)
+  private String createdBy;
+
+  @Column(nullable = false)
+  private LocalDateTime createdAt;
 
   @PrePersist
   public void prePersist() {
-    this.createDate = LocalDateTime.now();
+    if (this.createdAt == null) {
+      this.createdAt = LocalDateTime.now();
+    }
   }
 
   public Product(

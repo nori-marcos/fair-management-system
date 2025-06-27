@@ -16,4 +16,4 @@ public record CreateProductRequest(
         String description,
     @Schema(example = "199.99") @NotNull @PositiveOrZero BigDecimal price,
     @Schema(example = "e3c4a3f2-1d21-4c89-9e6f-a8d5f0d4c123") @NotNull UUID exhibitorId,
-    @Schema(example = "tech_admin") @NotNull String createdBy) {}
+    @Schema(example = "EXHIBITOR") @NotNull String createdBy) {}

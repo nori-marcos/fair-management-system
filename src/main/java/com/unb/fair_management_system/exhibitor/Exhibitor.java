@@ -3,6 +3,7 @@ package com.unb.fair_management_system.exhibitor;
 import com.unb.fair_management_system.company.Company;
 import com.unb.fair_management_system.fair.Fair;
 import com.unb.fair_management_system.product.Product;
+import com.unb.fair_management_system.user.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,10 +23,14 @@ public class Exhibitor {
   @GeneratedValue
   private UUID id;
 
+  @OneToOne
+  @JoinColumn(name = "user_id", unique = true)
+  private User user;
+
   @Column(nullable = false)
   private String contactName;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false)
   private String contactEmail;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -39,12 +44,17 @@ public class Exhibitor {
   @OneToMany(mappedBy = "exhibitor")
   private List<Product> products = new ArrayList<>();
 
+  @Column(nullable = false)
   private String createdBy;
+
+  @Column(nullable = false)
   private LocalDateTime createdAt;
 
   @PrePersist
   public void prePersist() {
-    this.createdAt = LocalDateTime.now();
+    if (this.createdAt == null) {
+      this.createdAt = LocalDateTime.now();
+    }
   }
 
   public Exhibitor(final Company company, final Fair fair, final String createdBy) {

@@ -3,6 +3,7 @@ package com.unb.fair_management_system.ticket;
 import com.unb.fair_management_system.exhibitor.Exhibitor;
 import com.unb.fair_management_system.fair.Fair;
 import com.unb.fair_management_system.visitor.Visitor;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -37,12 +38,17 @@ public class Ticket {
   @JoinColumn(name = "exhibitor_id", unique = true)
   private Exhibitor exhibitor;
 
+  @Column(nullable = false)
   private String createdBy;
+
+  @Column(nullable = false)
   private LocalDateTime createdAt;
 
   @PrePersist
   public void prePersist() {
-    this.createdAt = LocalDateTime.now();
+    if (this.createdAt == null) {
+      this.createdAt = LocalDateTime.now();
+    }
   }
 
   public Ticket(final Visitor visitor) {

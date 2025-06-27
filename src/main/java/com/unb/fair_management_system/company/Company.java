@@ -1,14 +1,13 @@
 package com.unb.fair_management_system.company;
 
 import com.unb.fair_management_system.exhibitor.Exhibitor;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,22 +24,26 @@ import lombok.NoArgsConstructor;
 public class Company {
   @Id @GeneratedValue private UUID id;
 
-  @NotBlank private String name;
+  @Column(nullable = false)
+  private String name;
 
-  @NotBlank private String contactName;
+  @Column(nullable = false)
+  private String email;
 
-  @NotBlank private String email;
+  @Column(nullable = false)
+  private String phone;
 
-  @NotBlank private String phone;
-
-  @NotBlank private String cnpj;
-
-  @NotBlank private String createdBy;
-
-  @NotNull private LocalDateTime createdDate;
+  @Column(nullable = false)
+  private String cnpj;
 
   @OneToMany(mappedBy = "company")
   private List<Exhibitor> exhibitors = new ArrayList<>();
+
+  @Column(nullable = false)
+  private String createdBy;
+
+  @Column(nullable = false)
+  private LocalDateTime createdAt;
 
   public Company(
       final String name,
@@ -53,11 +56,12 @@ public class Company {
     this.phone = phone;
     this.cnpj = cnpj;
     this.createdBy = createdBy;
-    this.createdDate = LocalDateTime.now();
   }
 
   @PrePersist
   public void prePersist() {
-    this.createdDate = LocalDateTime.now();
+    if (this.createdAt == null) {
+      this.createdAt = LocalDateTime.now();
+    }
   }
 }
