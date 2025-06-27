@@ -2,6 +2,7 @@ package com.unb.fair_management_system.company;
 
 import com.unb.fair_management_system.commons.EmptyRequest;
 import com.unb.fair_management_system.company.create.CreateCompanyRequest;
+import com.unb.fair_management_system.company.list.ListCompaniesResponse;
 import com.unb.fair_management_system.starter.mediator.Mediator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,8 +29,9 @@ public class CompanyController {
 
   @GetMapping
   @Operation(summary = "List all companies")
-  public ResponseEntity<List<Company>> listAll() {
+  public ResponseEntity<List<ListCompaniesResponse>> listAll() {
     return mediator.handle(
-        new EmptyRequest(), ResolvableType.forClassWithGenerics(List.class, Company.class));
+        new EmptyRequest(),
+        ResolvableType.forClassWithGenerics(List.class, ListCompaniesResponse.class));
   }
 }
