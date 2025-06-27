@@ -2,6 +2,7 @@ package com.unb.fair_management_system.company;
 
 import com.unb.fair_management_system.exhibitor.Exhibitor;
 import com.unb.fair_management_system.fair.Fair;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class Company {
   @Column(nullable = false)
   private String cnpj;
 
-  @OneToMany(mappedBy = "company")
+  @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Exhibitor> exhibitors = new ArrayList<>();
 
   @Column(nullable = false)

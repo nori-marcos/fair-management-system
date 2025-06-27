@@ -43,7 +43,7 @@ public class Exhibitor {
   @JoinColumn(name = "fair_id", nullable = false)
   private Fair fair;
 
-  @OneToMany(mappedBy = "exhibitor")
+  @OneToMany(mappedBy = "exhibitor", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Product> products = new ArrayList<>();
 
   @Column(nullable = false)
