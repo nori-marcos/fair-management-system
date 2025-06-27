@@ -25,7 +25,8 @@ public class ListCompaniesHandler implements Handler<EmptyRequest, List<ListComp
                         company.getName(),
                         company.getEmail(),
                         company.getPhone(),
-                        company.getCnpj()))
+                        company.getCnpj(),
+                        company.getFairs()))
             .toList();
     return ResponseEntity.ok(companies);
   }

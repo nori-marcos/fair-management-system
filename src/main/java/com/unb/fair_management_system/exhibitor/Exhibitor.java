@@ -1,9 +1,9 @@
 package com.unb.fair_management_system.exhibitor;
 
+import com.unb.fair_management_system.authentication.user.User;
 import com.unb.fair_management_system.company.Company;
 import com.unb.fair_management_system.fair.Fair;
 import com.unb.fair_management_system.product.Product;
-import com.unb.fair_management_system.authentication.user.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,11 +33,11 @@ public class Exhibitor {
   @Column(nullable = false)
   private String contactEmail;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "company_id", nullable = false)
   private Company company;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "fair_id", nullable = false)
   private Fair fair;
 

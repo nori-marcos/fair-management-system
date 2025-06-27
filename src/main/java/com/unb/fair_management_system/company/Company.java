@@ -1,6 +1,7 @@
 package com.unb.fair_management_system.company;
 
 import com.unb.fair_management_system.exhibitor.Exhibitor;
+import com.unb.fair_management_system.fair.Fair;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -63,5 +64,13 @@ public class Company {
     if (this.createdAt == null) {
       this.createdAt = LocalDateTime.now();
     }
+  }
+
+  public List<Fair> getFairs() {
+    final List<Fair> fairs = new ArrayList<>();
+    for (final Exhibitor exhibitor : exhibitors) {
+      fairs.add(exhibitor.getFair());
+    }
+    return fairs;
   }
 }
