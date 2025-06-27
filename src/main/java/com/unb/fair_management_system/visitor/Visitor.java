@@ -30,7 +30,7 @@ public class Visitor {
   @JoinColumn(name = "fair_id", nullable = false)
   private Fair fair;
 
-  @OneToOne(mappedBy = "exhibitor", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToOne(mappedBy = "visitor", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private Ticket ticket;
 
   @Column(nullable = false)
