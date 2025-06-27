@@ -4,6 +4,7 @@ import com.unb.fair_management_system.authentication.user.User;
 import com.unb.fair_management_system.company.Company;
 import com.unb.fair_management_system.fair.Fair;
 import com.unb.fair_management_system.product.Product;
+import com.unb.fair_management_system.ticket.Ticket;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,6 +43,9 @@ public class Exhibitor {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "fair_id", nullable = false)
   private Fair fair;
+
+  @OneToOne(mappedBy = "exhibitor", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  private Ticket ticket;
 
   @OneToMany(mappedBy = "exhibitor", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Product> products = new ArrayList<>();

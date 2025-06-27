@@ -1,7 +1,8 @@
 package com.unb.fair_management_system.visitor;
 
-import com.unb.fair_management_system.fair.Fair;
 import com.unb.fair_management_system.authentication.user.User;
+import com.unb.fair_management_system.fair.Fair;
+import com.unb.fair_management_system.ticket.Ticket;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -28,6 +29,9 @@ public class Visitor {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "fair_id", nullable = false)
   private Fair fair;
+
+  @OneToOne(mappedBy = "exhibitor", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  private Ticket ticket;
 
   @Column(nullable = false)
   private String createdBy;

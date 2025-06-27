@@ -9,6 +9,8 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @NoArgsConstructor
@@ -22,12 +24,14 @@ public class Ticket {
   @JoinColumn(name = "fair_id", nullable = false)
   private Fair fair;
 
-  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne
   @JoinColumn(name = "visitor_id", unique = true)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Visitor visitor;
 
-  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne
   @JoinColumn(name = "exhibitor_id", unique = true)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Exhibitor exhibitor;
 
   @Column(nullable = false)
