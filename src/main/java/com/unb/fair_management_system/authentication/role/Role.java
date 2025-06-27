@@ -1,4 +1,4 @@
-package com.unb.fair_management_system.user;
+package com.unb.fair_management_system.authentication.role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

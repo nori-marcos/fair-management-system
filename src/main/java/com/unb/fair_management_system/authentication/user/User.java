@@ -1,5 +1,6 @@
-package com.unb.fair_management_system.user;
+package com.unb.fair_management_system.authentication.user;
 
+import com.unb.fair_management_system.authentication.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import java.time.LocalDateTime;
@@ -48,5 +49,18 @@ public class User {
     if (this.createdAt == null) {
       this.createdAt = LocalDateTime.now();
     }
+  }
+
+  public User(
+      final String fullName,
+      final String email,
+      final String password,
+      final Set<Role> roles,
+      final String createdBy) {
+    this.fullName = fullName;
+    this.email = email;
+    this.password = password;
+    this.roles = roles;
+    this.createdBy = createdBy;
   }
 }
