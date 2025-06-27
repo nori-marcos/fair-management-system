@@ -14,4 +14,4 @@ public record CreateFairRequest(
     @Schema(example = "Centro de Convenções Ulysses Guimarães") @NotBlank String location,
     @Schema(example = "Brasília") @NotBlank String city,
     @Schema(example = "DF") @NotBlank String state,
-    @Schema(example = "ADMIN") @NotBlank String createdBy) {}
+    @Schema(example = "system") @NotBlank String createdBy) {}

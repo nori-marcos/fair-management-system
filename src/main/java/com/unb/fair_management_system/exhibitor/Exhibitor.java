@@ -17,7 +17,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "exhibitors")
+@Table(
+    name = "exhibitors",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"company_id", "fair_id"}))
 public class Exhibitor {
   @Id
   @GeneratedValue
