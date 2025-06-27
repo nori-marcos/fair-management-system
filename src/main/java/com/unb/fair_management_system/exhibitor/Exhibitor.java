@@ -1,17 +1,16 @@
 package com.unb.fair_management_system.exhibitor;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import com.unb.fair_management_system.company.Company;
+import com.unb.fair_management_system.fair.Fair;
+import com.unb.fair_management_system.product.Product;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -22,17 +21,35 @@ public class Exhibitor {
   @Id
   @GeneratedValue
   private UUID id;
-  @NotBlank
-  private String name;
-  @NotBlank
-  private String description;
-  @NotBlank
-  @Email
+
+  @Column(nullable = false)
+  private String contactName;
+
+  @Column(nullable = false, unique = true)
   private String contactEmail;
-  @NotBlank
-  @Pattern(
-      regexp = "^(\\+\\d{1,3}\\s?)?(\\(?\\d{2}\\)?\\s?)?\\d{4,5}[-\\s]?\\d{4}$",
-      message = "Invalid phone number format"
-  )
-  private String contactPhoneNumber;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "company_id", nullable = false)
+  private Company company;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "fair_id", nullable = false)
+  private Fair fair;
+
+  @OneToMany(mappedBy = "exhibitor")
+  private List<Product> products = new ArrayList<>();
+
+  private String createdBy;
+  private LocalDateTime createdAt;
+
+  @PrePersist
+  public void prePersist() {
+    this.createdAt = LocalDateTime.now();
+  }
+
+  public Exhibitor(final Company company, final Fair fair, final String createdBy) {
+    this.company = company;
+    this.fair = fair;
+    this.createdBy = createdBy;
+  }
 }
