@@ -86,8 +86,8 @@ public class ExceptionConfiguration {
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<Void> handle(final Exception exception) {
+  public ResponseEntity<String> handle(final Exception exception) {
     log.error(exception.getMessage(), exception);
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getCause().getMessage());
   }
 }
