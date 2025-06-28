@@ -3,6 +3,8 @@ package com.unb.fair_management_system.company;
 import com.unb.fair_management_system.commons.EmptyRequest;
 import com.unb.fair_management_system.company.create.CreateCompanyRequest;
 import com.unb.fair_management_system.company.list.ListCompaniesResponse;
+import com.unb.fair_management_system.company.update.UpdateCompanyRequest;
+import com.unb.fair_management_system.company.update.UpdateCompanyResponse;
 import com.unb.fair_management_system.starter.mediator.Mediator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,5 +35,18 @@ public class CompanyController {
     return mediator.handle(
         new EmptyRequest(),
         ResolvableType.forClassWithGenerics(List.class, ListCompaniesResponse.class));
+  }
+
+  @PutMapping
+  @Operation(summary = "Update an existing company")
+  public ResponseEntity<UpdateCompanyResponse> update(
+      @RequestBody final UpdateCompanyRequest request) {
+    return mediator.handle(request, UpdateCompanyResponse.class);
+  }
+
+  @DeleteMapping("/{id}")
+  @Operation(summary = "Delete a company")
+  public ResponseEntity<Void> delete(@PathVariable final UUID id) {
+    return mediator.handle(id, Void.class);
   }
 }
