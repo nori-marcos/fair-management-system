@@ -33,6 +33,6 @@ public class UpdateProductHandler implements Handler<UpdateProductRequest, Updat
             updated.getName(),
             updated.getDescription(),
             updated.getPrice(),
-            updated.getExhibitor().getId()));
+            updated.getCompany().getId()));
   }
 }

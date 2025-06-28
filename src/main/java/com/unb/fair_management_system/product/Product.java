@@ -1,6 +1,6 @@
 package com.unb.fair_management_system.product;
 
-import com.unb.fair_management_system.exhibitor.Exhibitor;
+import com.unb.fair_management_system.company.Company;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,9 +36,9 @@ public class Product {
   @PositiveOrZero
   private BigDecimal price;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "exhibitor_id", nullable = false)
-  private Exhibitor exhibitor;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "company_id", nullable = false)
+  private Company company;
 
   @Column(nullable = false)
   private String createdBy;
@@ -57,12 +57,12 @@ public class Product {
       final String name,
       final String description,
       final BigDecimal price,
-      final Exhibitor exhibitor,
+      final Company company,
       final String createdBy) {
     this.name = name;
     this.description = description;
     this.price = price;
-    this.exhibitor = exhibitor;
+    this.company = company;
     this.createdBy = createdBy;
   }
 }

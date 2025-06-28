@@ -12,12 +12,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "visitors")
+@Table(
+    name = "visitors",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "fair_id"}))
 public class Visitor {
   @Id @GeneratedValue private UUID id;
 
   @OneToOne
-  @JoinColumn(name = "user_id", unique = true)
+  @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
   @Column(nullable = false)
@@ -47,10 +49,12 @@ public class Visitor {
   }
 
   public Visitor(
+      final User user,
       final String contactName,
       final String contactEmail,
       final Fair fair,
       final String createdBy) {
+    this.user = user;
     this.contactName = contactName;
     this.contactEmail = contactEmail;
     this.fair = fair;

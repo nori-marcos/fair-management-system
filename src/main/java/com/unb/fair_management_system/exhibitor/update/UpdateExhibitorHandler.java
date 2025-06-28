@@ -35,4 +35,5 @@ public class UpdateExhibitorHandler
             updated.getCompany().getName());
     return ResponseEntity.ok(updatedResponse);
   }
+
 }

@@ -1,7 +1,7 @@
 package com.unb.fair_management_system.product.create;
 
-import com.unb.fair_management_system.exhibitor.Exhibitor;
-import com.unb.fair_management_system.exhibitor.ExhibitorRepository;
+import com.unb.fair_management_system.company.Company;
+import com.unb.fair_management_system.company.CompanyRepository;
 import com.unb.fair_management_system.product.Product;
 import com.unb.fair_management_system.product.ProductRepository;
 import com.unb.fair_management_system.starter.mediator.Handler;
@@ -16,18 +16,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreateProductHandler implements Handler<CreateProductRequest, UUID> {
   private final ProductRepository productRepository;
-  private final ExhibitorRepository exhibitorRepository;
+  private final CompanyRepository companyRepository;
 
   @Override
   public ResponseEntity<UUID> handle(final CreateProductRequest request) {
-    final Exhibitor exhibitor =
-        exhibitorRepository
-            .findById(request.exhibitorId())
-            .orElseThrow(() -> new EntityNotFoundException("Exhibitor not found"));
+    final Company company =
+        companyRepository
+            .findById(request.companyId())
+            .orElseThrow(() -> new EntityNotFoundException("Company not found"));
 
     final Product product =
         new Product(
-            request.name(), request.description(), request.price(), exhibitor, request.createdBy());
+            request.name(), request.description(), request.price(), company, request.createdBy());
 
     final UUID savedId = productRepository.save(product).getId();
     return ResponseEntity.status(HttpStatus.CREATED).body(savedId);

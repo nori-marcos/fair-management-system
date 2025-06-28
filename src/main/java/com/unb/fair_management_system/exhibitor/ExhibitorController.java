@@ -6,7 +6,7 @@ import com.unb.fair_management_system.exhibitor.list.ExhibitorResponse;
 import com.unb.fair_management_system.exhibitor.update.UpdateExhibitorRequest;
 import com.unb.fair_management_system.exhibitor.update.UpdateExhibitorResponse;
 import com.unb.fair_management_system.starter.mediator.Mediator;
-import com.unb.fair_management_system.ticket.Ticket;
+import com.unb.fair_management_system.ticket.TicketResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -26,8 +26,8 @@ public class ExhibitorController {
 
   @Operation(summary = "Create a new exhibitor and issue a ticket")
   @PostMapping
-  public ResponseEntity<Ticket> create(@RequestBody final CreateExhibitorRequest request) {
-    return mediator.handle(request, Ticket.class);
+  public ResponseEntity<TicketResponse> create(@RequestBody final CreateExhibitorRequest request) {
+    return mediator.handle(request, TicketResponse.class);
   }
 
   @PutMapping

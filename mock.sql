@@ -103,11 +103,11 @@ VALUES ('00000005-0000-0000-0000-000000000002',
         NOW());
 
 -- Produto de tecnologia da empresa TechCorp
-INSERT INTO products (id, name, description, price, exhibitor_id, created_by, created_at)
+INSERT INTO products (id, name, description, price, company_id, created_by, created_at)
 VALUES ('00000008-0000-0000-0000-000000000001',
         'Notebook Ultra X',
         'Notebook com processador Ryzen 9, 32GB RAM, SSD 1TB e GPU RTX 4060',
         8999.90,
-        '00000007-0000-0000-0000-000000000001',
+        '00000006-0000-0000-0000-000000000001',
         'elias@techcorp.com',
         NOW());

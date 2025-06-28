@@ -2,6 +2,7 @@ package com.unb.fair_management_system.company;
 
 import com.unb.fair_management_system.exhibitor.Exhibitor;
 import com.unb.fair_management_system.fair.Fair;
+import com.unb.fair_management_system.product.Product;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,6 +42,9 @@ public class Company {
   @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Exhibitor> exhibitors = new ArrayList<>();
 
+  @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Product> products = new ArrayList<>();
+
   @Column(nullable = false)
   private String createdBy;
 
@@ -70,7 +74,9 @@ public class Company {
   public List<Fair> getFairs() {
     final List<Fair> fairs = new ArrayList<>();
     for (final Exhibitor exhibitor : exhibitors) {
-      fairs.add(exhibitor.getFair());
+      if (!fairs.contains(exhibitor.getFair())) {
+        fairs.add(exhibitor.getFair());
+      }
     }
     return fairs;
   }

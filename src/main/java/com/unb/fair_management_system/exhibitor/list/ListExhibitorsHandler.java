@@ -28,7 +28,7 @@ public class ListExhibitorsHandler implements Handler<EmptyRequest, List<Exhibit
                         exhibitor.getContactName(),
                         exhibitor.getContactEmail(),
                         exhibitor.getCompany().getName(),
-                        exhibitor.getProducts().stream()
+                        exhibitor.getCompany().getProducts().stream()
                             .map(
                                 product ->
                                     new ProductResponse(

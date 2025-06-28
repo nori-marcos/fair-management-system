@@ -27,7 +27,7 @@ public class ListProductsHandler implements Handler<EmptyRequest, List<ProductRe
                         product.getName(),
                         product.getDescription(),
                         product.getPrice(),
-                        product.getExhibitor().getId()))
+                        product.getCompany().getId()))
             .toList();
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
