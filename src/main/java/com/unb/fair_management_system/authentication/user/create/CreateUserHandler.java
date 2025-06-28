@@ -7,6 +7,7 @@ import com.unb.fair_management_system.authentication.user.UserRepository;
 import com.unb.fair_management_system.starter.mediator.Handler;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,12 +20,24 @@ public class CreateUserHandler implements Handler<CreateUserRequest, User> {
 
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
+  private final List<String> prohibitedRolesAtCreation = List.of("VISITOR", "EXHIBITOR");
 
   @Override
   public ResponseEntity<User> handle(final CreateUserRequest request) {
 
     final Set<Role> roles = new HashSet<>();
+
+    final Role defaultRole =
+        roleRepository
+            .findByName("SELF")
+            .orElseThrow(() -> new EntityNotFoundException("Default role not found: SELF"));
+    roles.add(defaultRole);
+
     for (final String roleName : request.roles()) {
+      if (prohibitedRolesAtCreation.contains(roleName)) {
+        throw new IllegalArgumentException(
+            "Cannot assign role '" + roleName + "' at user creation.");
+      }
       final Role role =
           roleRepository
               .findByName(roleName)
