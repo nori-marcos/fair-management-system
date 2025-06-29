@@ -26,7 +26,7 @@ public class SecurityConfiguration {
   @Order(1)
   public SecurityFilterChain adminSecurityFilterChain(
       final HttpSecurity http, final UserDetailsService userDetailsService) throws Exception {
-    http.securityMatcher("/admin/**", ADMIN_LOGIN_URL)
+    http.securityMatcher("/admin/**")
         .authorizeHttpRequests(
             auth -> auth.requestMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated())
         .userDetailsService(userDetailsService)
