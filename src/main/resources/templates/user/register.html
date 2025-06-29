@@ -5,6 +5,10 @@
     <div style="width: 100%; max-width: 400px;">
         <h1 class="text-center">Cadastro de Usuário</h1>
 
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}">
+            Error text will appear here.
+        </div>
+
         <form th:action="@{/register/user}" th:object="${userRequest}" method="post">
             <div class="mb-3">
                 <label for="fullName" class="form-label">Nome Completo:</label>

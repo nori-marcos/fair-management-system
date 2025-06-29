@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -54,16 +55,27 @@ public class WebController {
 
   @PostMapping("/register/user")
   public String processUserRegistration(
-      @ModelAttribute("userRequest") final CreateUserRequest formSubmission) {
-    final var safeRequest =
-        new CreateUserRequest(
-            formSubmission.fullName(),
-            formSubmission.email(),
-            formSubmission.password(),
-            List.of("SELF"),
-            "self-registration");
-    mediator.handle(safeRequest, UUID.class);
-    return "redirect:/login/user";
+      @ModelAttribute("userRequest") final CreateUserRequest formSubmission,
+      final RedirectAttributes redirectAttributes) { // Add RedirectAttributes
+    try {
+      final var safeRequest =
+          new CreateUserRequest(
+              formSubmission.fullName(),
+              formSubmission.email(),
+              formSubmission.password(),
+              List.of("SELF"),
+              "self-registration");
+      mediator.handle(safeRequest, UUID.class);
+
+      redirectAttributes.addFlashAttribute(
+          "successMessage", "Registration successful! Please log in.");
+      return "redirect:/login/user";
+
+    } catch (final IllegalStateException e) {
+      redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+      redirectAttributes.addFlashAttribute("userRequest", formSubmission);
+      return "redirect:/register/user";
+    }
   }
 
   // --- Admin Login and Registration ---
@@ -85,16 +97,27 @@ public class WebController {
 
   @PostMapping("/register/admin")
   public String processAdminRegistration(
-      @ModelAttribute("userRequest") final CreateUserRequest formSubmission) {
-    final var safeRequest =
-        new CreateUserRequest(
-            formSubmission.fullName(),
-            formSubmission.email(),
-            formSubmission.password(),
-            List.of("ADMIN", "ORGANIZER"),
-            "admin-registration");
-    mediator.handle(safeRequest, UUID.class);
-    return "redirect:/login/admin";
+      @ModelAttribute("userRequest") final CreateUserRequest formSubmission,
+      final RedirectAttributes redirectAttributes) {
+    try {
+      final var safeRequest =
+          new CreateUserRequest(
+              formSubmission.fullName(),
+              formSubmission.email(),
+              formSubmission.password(),
+              List.of("ADMIN", "ORGANIZER"),
+              "admin-registration");
+      mediator.handle(safeRequest, UUID.class);
+
+      redirectAttributes.addFlashAttribute(
+          "successMessage", "Admin registration successful! Please log in.");
+      return "redirect:/login/admin";
+
+    } catch (final IllegalStateException e) {
+      redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+      redirectAttributes.addFlashAttribute("userRequest", formSubmission);
+      return "redirect:/register/admin";
+    }
   }
 
   // --- Admin Dashboard ---

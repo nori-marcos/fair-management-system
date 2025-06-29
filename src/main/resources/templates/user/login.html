@@ -4,6 +4,11 @@
 <div th:fragment="content" class="d-flex justify-content-center">
   <div style="width: 100%; max-width: 400px;">
     <h1 class="text-center">User Login</h1>
+
+    <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}">
+      Success text will appear here.
+    </div>
+
     <div th:if="${param.error}" class="alert alert-danger">Invalid username or password.</div>
     <div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
 
