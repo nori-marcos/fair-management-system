@@ -26,28 +26,32 @@ public class CreateUserHandler implements Handler<CreateUserRequest, UUID> {
 
   @Override
   public ResponseEntity<UUID> handle(final CreateUserRequest request) {
-    if (userRepository.findByEmail(request.email()).isPresent()) {
-      throw new IllegalStateException("Email already exists: " + request.email());
-    }
+    final User existentUser = userRepository.findByEmail(request.email()).orElse(null);
 
     final Set<Role> roles = new HashSet<>();
-    if (request.roles() != null && !request.roles().isEmpty()) {
+    if (!request.roles().isEmpty()) {
       for (final String roleName : request.roles()) {
-        final Role role = roleRepository.findByName(roleName)
-                              .orElseThrow(() -> new EntityNotFoundException("Role not found: " + roleName));
+        final Role role =
+            roleRepository
+                .findByName(roleName)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found: " + roleName));
+        if (existentUser != null) {
+          if (existentUser.getRoles().contains(role)) {
+            throw new IllegalStateException("User already has role: " + roleName);
+          } else {
+            existentUser.getRoles().add(role);
+            userRepository.save(existentUser);
+            return ResponseEntity.ok(existentUser.getId());
+          }
+        }
         roles.add(role);
       }
     }
 
     final String encodedPassword = passwordEncoder.encode(request.password());
 
-    final User user = new User(
-        request.fullName(),
-        request.email(),
-        encodedPassword,
-        roles,
-        request.createdBy() != null ? request.createdBy() : "self-registration"
-    );
+    final User user =
+        new User(request.fullName(), request.email(), encodedPassword, roles, request.createdBy());
 
     final UUID savedId = userRepository.save(user).getId();
     return ResponseEntity.status(HttpStatus.CREATED).body(savedId);

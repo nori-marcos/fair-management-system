@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <body>
-<nav th:fragment="header" class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+<nav th:fragment="header"
+     th:class="'navbar navbar-expand-lg navbar-dark ' + (${loginType == 'ADMIN'} ? 'bg-danger' : (${loginType == 'USER'} ? 'bg-primary' : 'bg-dark'))">
+
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">Fair Management</a>
+        <a class="navbar-brand" th:href="@{/}"
+           th:text="${loginType == 'ADMIN' ? 'Fair Management (Admin)' : 'Fair Management'}">Fair Management</a>
+
         <div class="collapse navbar-collapse">
+
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
+                <li class="nav-item" th:if="${loginType == 'ADMIN'}">
+                    <a class="nav-link" th:href="@{/admin/dashboard}">Admin Dashboard</a>
+                </li>
+                <li class="nav-item" th:if="${loginType != 'ADMIN'}">
                     <a class="nav-link" th:href="@{/web/fairs}">Fairs</a>
                 </li>
-                <!-- Other nav links can go here -->
             </ul>
 
-            <!-- Include the authentication buttons fragment on the right side -->
             <div th:replace="~{fragments/auth-buttons :: auth-links}"></div>
 
         </div>

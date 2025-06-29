@@ -6,7 +6,6 @@
 <div th:fragment="auth-links" class="d-flex align-items-center">
 
     <div sec:authorize="isAnonymous()">
-        <!-- User Actions -->
         <div class="btn-group me-3" role="group" aria-label="User Actions">
             <a th:href="@{/login/user}" class="btn btn-outline-primary">
                 <i class="fa-solid fa-right-to-bracket me-1"></i> Login Usuário
@@ -15,8 +14,6 @@
                 <i class="fa-solid fa-user-plus me-1"></i> Registrar Usuário
             </a>
         </div>
-
-        <!-- Admin Actions -->
         <div class="btn-group" role="group" aria-label="Admin Actions">
             <a th:href="@{/login/admin}" class="btn btn-outline-secondary">
                 <i class="fa-solid fa-user-shield me-1"></i> Login Admin
@@ -32,9 +29,15 @@
             Bem-vindo, <span sec:authentication="name">User</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
-            <li sec:authorize="hasRole('ADMIN')">
+
+            <li sec:authorize="hasRole('ADMIN')" th:if="${loginType == 'ADMIN'}">
                 <a class="dropdown-item" th:href="@{/admin/dashboard}">Admin Dashboard</a>
             </li>
+
+            <li th:if="${loginType == 'USER'}">
+                <a class="dropdown-item" th:href="@{/web/fairs}">Self User Tools</a>
+            </li>
+
             <li><hr class="dropdown-divider"></li>
             <li>
                 <form th:action="@{/logout}" method="post" class="d-inline">
@@ -43,8 +46,6 @@
             </li>
         </ul>
     </div>
-
 </div>
-
 </body>
 </html>

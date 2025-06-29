@@ -26,15 +26,22 @@ public class SecurityConfiguration {
   @Order(1)
   public SecurityFilterChain adminSecurityFilterChain(
       final HttpSecurity http, final UserDetailsService userDetailsService) throws Exception {
-    http.securityMatcher("/admin/**")
+    http.securityMatcher("/admin/**", ADMIN_LOGIN_URL, "/register/admin", "/login/admin?error=true")
         .authorizeHttpRequests(
-            auth -> auth.requestMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated())
+            auth ->
+                auth.requestMatchers(ADMIN_LOGIN_URL, "/register/admin", "/login/admin?error=true")
+                    .permitAll()
+                    .requestMatchers("/admin/**")
+                    .hasRole("ADMIN")
+                    .anyRequest()
+                    .authenticated())
         .userDetailsService(userDetailsService)
         .formLogin(
             form ->
                 form.loginPage(ADMIN_LOGIN_URL)
                     .loginProcessingUrl(ADMIN_LOGIN_URL)
-                    .defaultSuccessUrl("/admin/dashboard", true)
+                    .successHandler(
+                        new LoginContextAuthenticationSuccessHandler("ADMIN", "/admin/dashboard"))
                     .failureUrl("/login/admin?error=true"));
     return http.build();
   }
@@ -52,6 +59,7 @@ public class SecurityConfiguration {
                         "/js/**",
                         "/register/**",
                         USER_LOGIN_URL,
+                        "/login/user?error=true",
                         "/registration-success",
                         "/swagger-ui.html",
                         "/swagger-ui/**",
@@ -66,11 +74,17 @@ public class SecurityConfiguration {
             form ->
                 form.loginPage(USER_LOGIN_URL)
                     .loginProcessingUrl(USER_LOGIN_URL)
-                    .defaultSuccessUrl("/web/fairs", true)
+                    .successHandler(
+                        new LoginContextAuthenticationSuccessHandler("USER", "/web/fairs"))
                     .failureUrl("/login/user?error=true"))
         .logout(
             logout ->
-                logout.logoutUrl("/logout").logoutSuccessUrl("/login/user?logout").permitAll());
+                logout
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login/user?logout")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .permitAll());
     return http.build();
   }
 }
