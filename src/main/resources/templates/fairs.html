@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content">
+    <h1>Create a New Fair</h1>
+    <form class="mb-5" action="#" th:action="@{/web/fairs/create}" th:object="${newFairRequest}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" class="form-control" th:field="*{name}" required/>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" id="description" class="form-control" th:field="*{description}" required/>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" id="startDate" class="form-control" th:field="*{startDate}" required/>
+            </div>
+            <div class="col">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" id="endDate" class="form-control" th:field="*{endDate}" required/>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" id="location" class="form-control" th:field="*{location}" required/>
+            </div>
+            <div class="col">
+                <label for="city" class="form-label">City</label>
+                <input type="text" id="city" class="form-control" th:field="*{city}" required/>
+            </div>
+            <div class="col">
+                <label for="state" class="form-label">State</label>
+                <input type="text" id="state" class="form-control" th:field="*{state}" required/>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Create Fair</button>
+    </form>
+
+    <hr/>
+
+    <h1 class="mt-5">Available Fairs</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${fairs.empty}">
+            <td colspan="5">No fairs available at the moment.</td>
+        </tr>
+        <tr th:each="fair : ${fairs}">
+            <td th:text="${fair.name}"></td>
+            <td th:text="${fair.description}"></td>
+            <td th:text="${fair.location} + ', ' + ${fair.city} + '-' + ${fair.state}"></td>
+            <td th:text="${fair.startDate}"></td>
+            <td th:text="${fair.endDate}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
