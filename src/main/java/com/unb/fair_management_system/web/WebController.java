@@ -78,6 +78,13 @@ public class WebController {
     }
   }
 
+  // --- User Control ---
+  @GetMapping("/user/dashboard")
+  public String userDashboard(final Model model) {
+    model.addAttribute("contentFragment", "user/dashboard");
+    return "layout";
+  }
+
   // --- Admin Login and Registration ---
   @GetMapping("/login/admin")
   public String adminLoginPage(final Authentication authentication, final Model model) {
@@ -120,15 +127,14 @@ public class WebController {
     }
   }
 
-  // --- Admin Dashboard ---
+  // --- Admin Control ---
   @GetMapping("/admin/dashboard")
   public String adminDashboard(final Model model) {
     model.addAttribute("contentFragment", "admin/dashboard");
     return "layout";
   }
 
-  // --- Fairs Mappings ---
-  @GetMapping("/web/fairs")
+  @GetMapping("/admin/fairs")
   public String listFairs(final Model model) {
     final List<Fair> fairs =
         (List<Fair>)
@@ -143,7 +149,7 @@ public class WebController {
     return "layout";
   }
 
-  @PostMapping("/web/fairs/create")
+  @PostMapping("/admin/fairs/create")
   public String createFair(
       @ModelAttribute("newFairRequest") final CreateFairRequest newFairRequest) {
     final var request =

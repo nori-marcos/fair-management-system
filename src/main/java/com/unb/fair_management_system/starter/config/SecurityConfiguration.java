@@ -75,13 +75,13 @@ public class SecurityConfiguration {
                 form.loginPage(USER_LOGIN_URL)
                     .loginProcessingUrl(USER_LOGIN_URL)
                     .successHandler(
-                        new LoginContextAuthenticationSuccessHandler("USER", "/web/fairs"))
+                        new LoginContextAuthenticationSuccessHandler("USER", "/user/dashboard"))
                     .failureUrl("/login/user?error=true"))
         .logout(
             logout ->
                 logout
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl("/login/user?logout")
+                    .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
                     .permitAll());

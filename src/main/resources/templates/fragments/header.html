@@ -7,16 +7,19 @@
 
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/}"
-           th:text="${loginType == 'ADMIN' ? 'Fair Management (Admin)' : 'Fair Management'}">Fair Management</a>
+           th:text="${loginType == 'ADMIN' ? 'Gestão de Feiras (Admin)' : 'Gestão de Feiras (User)'}">Gestão de Feiras</a>
 
         <div class="collapse navbar-collapse">
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item" th:if="${loginType == 'ADMIN'}">
-                    <a class="nav-link" th:href="@{/admin/dashboard}">Admin Dashboard</a>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Home</a>
                 </li>
-                <li class="nav-item" th:if="${loginType != 'ADMIN'}">
-                    <a class="nav-link" th:href="@{/web/fairs}">Fairs</a>
+                <li class="nav-item" th:if="${loginType == 'ADMIN'}">
+                    <a class="nav-link" th:href="@{/admin/dashboard}">Dashboard do Administrador</a>
+                </li>
+                <li class="nav-item" th:if="${loginType == 'ADMIN'}">
+                    <a class="nav-link" th:href="@{/admin/fairs}">Gerir Feiras</a>
                 </li>
             </ul>
 
