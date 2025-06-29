@@ -52,7 +52,12 @@ public class SecurityConfiguration {
                         "/js/**",
                         "/register/**",
                         USER_LOGIN_URL,
-                        "/registration-success")
+                        "/registration-success",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/swagger-resources/**",
+                        "/webjars/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated())
