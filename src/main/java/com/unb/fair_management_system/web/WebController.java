@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
 @Controller
 @RequiredArgsConstructor
 public class WebController {
@@ -21,85 +22,90 @@ public class WebController {
   private final Mediator mediator;
 
   @GetMapping("/")
-  public String home(Model model) {
-    // Fetch the list of fairs to display on the home page
-    List<Fair> fairs = (List<Fair>) mediator.handle(
-        new EmptyRequest(), ResolvableType.forClassWithGenerics(List.class, Fair.class)
-    ).getBody();
+  public String home(final Model model) {
+    final List<Fair> fairs =
+        (List<Fair>)
+            mediator
+                .handle(
+                    new EmptyRequest(), ResolvableType.forClassWithGenerics(List.class, Fair.class))
+                .getBody();
     model.addAttribute("fairs", fairs);
-
-    // Point to the home content fragment
     model.addAttribute("contentFragment", "content/home");
     return "layout";
   }
 
   // --- User Login and Registration ---
   @GetMapping("/login/user")
-  public String userLoginPage(Model model) {
+  public String userLoginPage(final Model model) {
     model.addAttribute("contentFragment", "content/login-user");
     return "layout";
   }
 
   @GetMapping("/register/user")
-  public String userRegisterPage(Model model) {
+  public String userRegisterPage(final Model model) {
     model.addAttribute("userRequest", new CreateUserRequest(null, null, null, null, null));
     model.addAttribute("contentFragment", "content/register-user");
     return "layout";
   }
 
   @PostMapping("/register/user")
-  public String processUserRegistration(@ModelAttribute("userRequest") CreateUserRequest formSubmission) {
-    var safeRequest = new CreateUserRequest(
-        formSubmission.fullName(),
-        formSubmission.email(),
-        formSubmission.password(),
-        List.of("SELF"),
-        "self-registration"
-    );
+  public String processUserRegistration(
+      @ModelAttribute("userRequest") final CreateUserRequest formSubmission) {
+    final var safeRequest =
+        new CreateUserRequest(
+            formSubmission.fullName(),
+            formSubmission.email(),
+            formSubmission.password(),
+            List.of("SELF"),
+            "self-registration");
     mediator.handle(safeRequest, UUID.class);
     return "redirect:/login/user";
   }
 
   // --- Admin Login and Registration ---
   @GetMapping("/login/admin")
-  public String adminLoginPage(Model model) {
+  public String adminLoginPage(final Model model) {
     model.addAttribute("contentFragment", "content/login-admin");
     return "layout";
   }
 
   @GetMapping("/register/admin")
-  public String adminRegisterPage(Model model) {
+  public String adminRegisterPage(final Model model) {
     model.addAttribute("userRequest", new CreateUserRequest(null, null, null, null, null));
     model.addAttribute("contentFragment", "content/register-admin");
     return "layout";
   }
 
   @PostMapping("/register/admin")
-  public String processAdminRegistration(@ModelAttribute("userRequest") CreateUserRequest formSubmission) {
-    var safeRequest = new CreateUserRequest(
-        formSubmission.fullName(),
-        formSubmission.email(),
-        formSubmission.password(),
-        List.of("ADMIN", "ORGANIZER"), // Assign Admin and Organizer roles
-        "admin-registration"
-    );
+  public String processAdminRegistration(
+      @ModelAttribute("userRequest") final CreateUserRequest formSubmission) {
+    final var safeRequest =
+        new CreateUserRequest(
+            formSubmission.fullName(),
+            formSubmission.email(),
+            formSubmission.password(),
+            List.of("ADMIN", "ORGANIZER"),
+            "admin-registration");
     mediator.handle(safeRequest, UUID.class);
     return "redirect:/login/admin";
   }
 
   // --- Admin Dashboard ---
   @GetMapping("/admin/dashboard")
-  public String adminDashboard(Model model) {
+  public String adminDashboard(final Model model) {
     model.addAttribute("contentFragment", "content/admin-dashboard");
     return "layout";
   }
 
   // --- Fairs Mappings ---
   @GetMapping("/web/fairs")
-  public String listFairs(Model model) {
-    List<Fair> fairs = (List<Fair>) mediator.handle(
-        new EmptyRequest(), ResolvableType.forClassWithGenerics(List.class, Fair.class)
-    ).getBody();
+  public String listFairs(final Model model) {
+    final List<Fair> fairs =
+        (List<Fair>)
+            mediator
+                .handle(
+                    new EmptyRequest(), ResolvableType.forClassWithGenerics(List.class, Fair.class))
+                .getBody();
     model.addAttribute("fairs", fairs);
     model.addAttribute("newFairRequest", new CreateFairRequest(null, null, null, null, null, null, null, null));
     model.addAttribute("contentFragment", "content/fairs");
@@ -107,8 +113,9 @@ public class WebController {
   }
 
   @PostMapping("/web/fairs/create")
-  public String createFair(@ModelAttribute("newFairRequest") CreateFairRequest newFairRequest) {
-    var request =
+  public String createFair(
+      @ModelAttribute("newFairRequest") final CreateFairRequest newFairRequest) {
+    final var request =
         new CreateFairRequest(
             newFairRequest.name(),
             newFairRequest.description(),

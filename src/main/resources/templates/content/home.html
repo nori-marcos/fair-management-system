@@ -4,29 +4,36 @@
 <body>
 <div th:fragment="content">
     <div class="px-4 py-5 my-5 text-center">
-        <h1 class="display-5 fw-bold">Welcome to the Fair Management System</h1>
+        <h1 class="display-5 fw-bold">Bem-vindo ao Sistema de Gerenciamento de Feiras</h1>
         <div class="col-lg-6 mx-auto">
-            <p class="lead mb-4">Discover amazing fairs and events. See what's currently available below.</p>
+            <p class="lead mb-4">
+            Descubra feiras e eventos incríveis. Veja o que está disponível atualmente abaixo.
+            </p>
         </div>
     </div>
 
-    <h2 class="pb-2 border-bottom">Upcoming Fairs</h2>
+    <h2 class="pb-2 border-bottom">Próximas Feiras</h2>
 
     <div class="row row-cols-1 row-cols-md-2 g-4 mt-3">
         <div th:if="${fairs.empty}" class="col-12">
             <div class="alert alert-info" role="alert">
-                There are no fairs scheduled at the moment. Please check back later!
+                Não há feiras agendadas no momento. Por favor, volte mais tarde!
             </div>
         </div>
-        <!-- Loop through each fair -->
         <div th:each="fair : ${fairs}" class="col">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${fair.name}">Fair Name</h5>
-                    <p class="card-text" th:text="${fair.description}">Fair description goes here.</p>
+                    <h5 class="card-title" th:text="${fair.name}">
+                        Nome da Feira
+                    </h5>
+                    <p class="card-text" th:text="${fair.description}">
+                        Descrição da Feira.
+                    </p>
                 </div>
                 <div class="card-footer">
-                    <small class="text-muted" th:text="'Location: ' + ${fair.location} + ', ' + ${fair.city}">Location</small>
+                    <small class="text-muted" th:text="'Location: ' + ${fair.location} + ', ' + ${fair.city}">
+                        Localização
+                    </small>
                 </div>
             </div>
         </div>
