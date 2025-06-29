@@ -24,6 +24,7 @@ public class CustomErrorController implements ErrorController {
         errorMsg = "A página que você está procurando não foi encontrada.";
       } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
         errorMsg = "Você não tem permissão para acessar esta página.";
+        model.addAttribute("isForbiddenError", true);
       } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
         errorMsg = "Ocorreu um erro inesperado em nosso servidor. Por favor, tente novamente mais tarde.";
       } else {

@@ -56,7 +56,7 @@ public class WebController {
   @PostMapping("/register/user")
   public String processUserRegistration(
       @ModelAttribute("userRequest") final CreateUserRequest formSubmission,
-      final RedirectAttributes redirectAttributes) { // Add RedirectAttributes
+      final RedirectAttributes redirectAttributes) {
     try {
       final var safeRequest =
           new CreateUserRequest(
@@ -67,8 +67,8 @@ public class WebController {
               "self-registration");
       mediator.handle(safeRequest, UUID.class);
 
-      redirectAttributes.addFlashAttribute(
-          "successMessage", "Registration successful! Please log in.");
+      redirectAttributes.addFlashAttribute("successMessage", "Registration successful! Please log in.");
+      redirectAttributes.addFlashAttribute("username", formSubmission.email());
       return "redirect:/login/user";
 
     } catch (final IllegalStateException e) {
@@ -109,8 +109,8 @@ public class WebController {
               "admin-registration");
       mediator.handle(safeRequest, UUID.class);
 
-      redirectAttributes.addFlashAttribute(
-          "successMessage", "Admin registration successful! Please log in.");
+      redirectAttributes.addFlashAttribute("successMessage", "Admin registration successful! Please log in.");
+      redirectAttributes.addFlashAttribute("username", formSubmission.email());
       return "redirect:/login/admin";
 
     } catch (final IllegalStateException e) {

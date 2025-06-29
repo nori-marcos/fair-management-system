@@ -10,7 +10,13 @@
     <p class="lead">
         Por favor, verifique a URL ou volte para a página inicial.
     </p>
-    <a th:href="@{/}" class="btn btn-primary">Ir para a Página Inicial</a>
+
+    <a th:if="${!isForbiddenError}" th:href="@{/}" class="btn btn-primary">Ir para a Página Inicial</a>
+
+    <form th:if="${isForbiddenError}" th:action="@{/logout}" method="post" class="d-inline">
+        <button type="submit" class="btn btn-warning">Logout e ir para Página Inicial</button>
+    </form>
+
 </div>
 </body>
 </html>
