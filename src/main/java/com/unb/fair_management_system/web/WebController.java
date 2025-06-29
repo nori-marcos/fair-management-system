@@ -22,7 +22,6 @@ public class WebController {
 
   @GetMapping("/web/fairs")
   public String listFairs(Model model) {
-    // 1. Load the data for the page
     List<Fair> fairs =
         (List<Fair>)
             mediator
@@ -33,10 +32,9 @@ public class WebController {
     model.addAttribute(
         "newFairRequest", new CreateFairRequest(null, null, null, null, null, null, null, null));
 
-    // 2. We comment this line out for the test
-     model.addAttribute("contentFragment", "fairs :: content");
+    // UPDATE THE PATH to include the 'content' directory
+    model.addAttribute("contentFragment", "content/fairs");
 
-    // 3. Return the main layout template
     return "layout";
   }
 
@@ -59,7 +57,8 @@ public class WebController {
   // You can add other pages using the same pattern
   @GetMapping("/")
   public String home(Model model) {
-    model.addAttribute("contentFragment", "home :: content");
+    // UPDATE THE PATH here as well
+    model.addAttribute("contentFragment", "content/home :: content");
     return "layout";
   }
 }

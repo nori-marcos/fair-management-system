@@ -11,7 +11,8 @@
 <header th:replace="~{fragments/header :: header}"></header>
 
 <main class="container mt-4">
-    <div th:replace="~{fairs :: content}"></div>
+    <div th:replace="${contentFragment} :: content">
+    </div>
 </main>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
