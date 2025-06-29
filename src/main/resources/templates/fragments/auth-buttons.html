@@ -1,15 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="pt-BR">
 <body>
 
 <div th:fragment="auth-links" class="d-flex align-items-center">
 
     <div sec:authorize="isAnonymous()">
-        <a th:href="@{/login/user}" class="btn btn-outline-primary me-2">Login Usuário</a>
-        <a th:href="@{/register/user}" class="btn btn-primary">Registrar Usuário</a>
-        <a th:href="@{/login/admin}" class="btn-outline-danger ms-2">Login Admin</a>
-        <a th:href="@{/register/admin}" class="btn btn-danger ms-2">Registrar Admin</a>
+        <!-- User Actions -->
+        <div class="btn-group me-3" role="group" aria-label="User Actions">
+            <a th:href="@{/login/user}" class="btn btn-outline-primary">
+                <i class="fa-solid fa-right-to-bracket me-1"></i> Login Usuário
+            </a>
+            <a th:href="@{/register/user}" class="btn btn-primary">
+                <i class="fa-solid fa-user-plus me-1"></i> Registrar Usuário
+            </a>
+        </div>
+
+        <!-- Admin Actions -->
+        <div class="btn-group" role="group" aria-label="Admin Actions">
+            <a th:href="@{/login/admin}" class="btn btn-outline-secondary">
+                <i class="fa-solid fa-user-shield me-1"></i> Login Admin
+            </a>
+            <a th:href="@{/register/admin}" class="btn btn-secondary">
+                <i class="fa-solid fa-user-gear me-1"></i> Registrar Admin
+            </a>
+        </div>
     </div>
 
     <div sec:authorize="isAuthenticated()" class="dropdown">

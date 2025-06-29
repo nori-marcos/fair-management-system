@@ -1,13 +1,13 @@
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <body>
 <div th:fragment="content">
     <div class="px-4 py-5 my-5 text-center">
         <h1 class="display-5 fw-bold">Bem-vindo ao Sistema de Gerenciamento de Feiras</h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">
-            Descubra feiras e eventos incríveis. Veja o que está disponível atualmente abaixo.
+            Descubra feiras e eventos incríveis.<br>Veja o que está disponível atualmente abaixo.
             </p>
         </div>
     </div>
@@ -15,7 +15,7 @@
     <h2 class="pb-2 border-bottom">Próximas Feiras</h2>
 
     <div class="row row-cols-1 row-cols-md-2 g-4 mt-3">
-        <div th:if="${fairs.empty}" class="col-12">
+        <div th:if="${#lists.isEmpty(fairs)}" class="col-12">
             <div class="alert alert-info" role="alert">
                 Não há feiras agendadas no momento. Por favor, volte mais tarde!
             </div>

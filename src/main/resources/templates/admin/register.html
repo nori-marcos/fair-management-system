@@ -3,11 +3,11 @@
 <body>
 <div th:fragment="content" class="d-flex justify-content-center">
     <div style="width: 100%; max-width: 400px;">
-        <h1 class="text-center">User Registration</h1>
+        <h1 class="text-center">Cadastro de Admin</h1>
 
-        <form th:action="@{/register/user}" th:object="${userRequest}" method="post">
+        <form th:action="@{/register/admin}" th:object="${userRequest}" method="post">
             <div class="mb-3">
-                <label for="fullName" class="form-label">Full Name:</label>
+                <label for="fullName" class="form-label">Nome Completo:</label>
                 <input type="text" id="fullName" class="form-control" th:field="*{fullName}" required/>
             </div>
             <div class="mb-3">
@@ -15,13 +15,11 @@
                 <input type="email" id="email" class="form-control" th:field="*{email}" required/>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
+                <label for="password" class="form-label">Senha:</label>
                 <input type="password" id="password" class="form-control" th:field="*{password}" required/>
             </div>
-            <!-- Hidden field to specify roles for this form -->
-            <input type="hidden" th:field="*{roles}" th:value="'SELF'" />
             <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-danger">Cadastrar como Admin</button>
             </div>
         </form>
     </div>

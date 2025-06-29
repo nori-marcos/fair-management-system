@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ResolvableType;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,21 +31,24 @@ public class WebController {
                     new EmptyRequest(), ResolvableType.forClassWithGenerics(List.class, Fair.class))
                 .getBody();
     model.addAttribute("fairs", fairs);
-    model.addAttribute("contentFragment", "content/home");
+    model.addAttribute("contentFragment", "home");
     return "layout";
   }
 
   // --- User Login and Registration ---
   @GetMapping("/login/user")
-  public String userLoginPage(final Model model) {
-    model.addAttribute("contentFragment", "content/login-user");
+  public String userLoginPage(final Authentication authentication, final Model model) {
+    if (authentication != null && authentication.isAuthenticated()) {
+      return "redirect:/web/fairs";
+    }
+    model.addAttribute("contentFragment", "user/login");
     return "layout";
   }
 
   @GetMapping("/register/user")
   public String userRegisterPage(final Model model) {
     model.addAttribute("userRequest", new CreateUserRequest(null, null, null, null, null));
-    model.addAttribute("contentFragment", "content/register-user");
+    model.addAttribute("contentFragment", "user/register");
     return "layout";
   }
 
@@ -64,15 +68,18 @@ public class WebController {
 
   // --- Admin Login and Registration ---
   @GetMapping("/login/admin")
-  public String adminLoginPage(final Model model) {
-    model.addAttribute("contentFragment", "content/login-admin");
+  public String adminLoginPage(final Authentication authentication, final Model model) {
+    if (authentication != null && authentication.isAuthenticated()) {
+      return "redirect:/admin/dashboard";
+    }
+    model.addAttribute("contentFragment", "admin/login");
     return "layout";
   }
 
   @GetMapping("/register/admin")
   public String adminRegisterPage(final Model model) {
     model.addAttribute("userRequest", new CreateUserRequest(null, null, null, null, null));
-    model.addAttribute("contentFragment", "content/register-admin");
+    model.addAttribute("contentFragment", "admin/register");
     return "layout";
   }
 
@@ -93,7 +100,7 @@ public class WebController {
   // --- Admin Dashboard ---
   @GetMapping("/admin/dashboard")
   public String adminDashboard(final Model model) {
-    model.addAttribute("contentFragment", "content/admin-dashboard");
+    model.addAttribute("contentFragment", "admin/dashboard");
     return "layout";
   }
 
@@ -107,8 +114,9 @@ public class WebController {
                     new EmptyRequest(), ResolvableType.forClassWithGenerics(List.class, Fair.class))
                 .getBody();
     model.addAttribute("fairs", fairs);
-    model.addAttribute("newFairRequest", new CreateFairRequest(null, null, null, null, null, null, null, null));
-    model.addAttribute("contentFragment", "content/fairs");
+    model.addAttribute(
+        "newFairRequest", new CreateFairRequest(null, null, null, null, null, null, null, null));
+    model.addAttribute("contentFragment", "fairs/index");
     return "layout";
   }
 
