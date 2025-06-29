@@ -21,6 +21,9 @@
                 <li class="nav-item" th:if="${loginType == 'ADMIN'}">
                     <a class="nav-link" th:href="@{/admin/fairs}">Gerir Feiras</a>
                 </li>
+                <li class="nav-item" th:if="${loginType != 'ADMIN'}">
+                    <a class="nav-link" th:href="@{/user/dashboard}">Dashboard do Usuário</a>
+                </li>
             </ul>
 
             <div th:replace="~{fragments/auth-buttons :: auth-links}"></div>
