@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" class="d-flex justify-content-center">
+    <div style="width: 100%; max-width: 400px;">
+        <h1 class="text-center">Admin Registration</h1>
+
+        <form th:action="@{/register/admin}" th:object="${userRequest}" method="post">
+            <div class="mb-3">
+                <label for="fullName" class="form-label">Full Name:</label>
+                <input type="text" id="fullName" class="form-control" th:field="*{fullName}" required/>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" id="email" class="form-control" th:field="*{email}" required/>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" id="password" class="form-control" th:field="*{password}" required/>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-danger">Register as Admin</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

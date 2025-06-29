@@ -3,16 +3,18 @@
 <body>
 <nav th:fragment="header" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Fair Management</a>
+        <a class="navbar-brand" th:href="@{/}">Fair Management</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/web/fairs}">Fairs</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/register}">Register</a>
-                </li>
+                <!-- Other nav links can go here -->
             </ul>
+
+            <!-- Include the authentication buttons fragment on the right side -->
+            <div th:replace="~{fragments/auth-buttons :: auth-links}"></div>
+
         </div>
     </div>
 </nav>
