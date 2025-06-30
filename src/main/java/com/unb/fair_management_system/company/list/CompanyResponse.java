@@ -5,7 +5,7 @@ import com.unb.fair_management_system.product.ProductResponse;
 import java.util.List;
 import java.util.UUID;
 
-public record ListCompaniesResponse(
+public record CompanyResponse(
     UUID id,
     String name,
     String email,

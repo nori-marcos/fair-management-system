@@ -6,9 +6,54 @@
     <div class="px-4 py-5 my-5 text-center">
         <h1 class="display-5 fw-bold">Dashboard do Usuário</h1>
         <div class="col-lg-6 mx-auto">
-            <p class="lead mb-4">Bem-vindo, <span sec:authentication="name">User</span>. <br> Aqui você gerencia sua participação em feiras.</p>
+            <p class="lead mb-4">Bem-vindo, <strong sec:authentication="name">User</strong>. <br> Aqui você pode gerenciar sua participação em feiras.</p>
         </div>
     </div>
+
+    <h2 class="pb-2 border-bottom">O que você gostaria de fazer?</h2>
+    <div class="row row-cols-1 row-cols-md-2 g-4 mt-3">
+
+        <div class="col">
+            <a th:href="@{/web/fairs}" class="card-link">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fa-solid fa-ticket me-2"></i>Visitar Feiras</h5>
+                        <p class="card-text">
+                            Confira as feiras disponíveis e participe como visitante.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col">
+            <a th:href="@{/exhibit/fairs}" class="card-link">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fa-solid fa-store me-2"></i>Expor em Feiras</h5>
+                        <p class="card-text">
+                            Se você é um expositor, veja as feiras onde pode apresentar seus produtos.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
 </div>
+
+<style>
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .card-link:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+</style>
+
 </body>
 </html>

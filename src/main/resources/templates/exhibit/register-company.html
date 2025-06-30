@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <h1>Registrar para Expor: Passo 1 de 3</h1>
+    <p class="lead">Primeiro, selecione a empresa que você representará ou cadastre uma nova.</p>
+    <hr/>
+
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <form th:action="@{/exhibit/register/company}" method="post">
+        <div class="mb-3">
+            <label for="companyId" class="form-label">Selecione uma Empresa Existente</label>
+            <select id="companyId" name="companyId" class="form-select">
+                <option value="">-- Ou cadastre uma nova abaixo --</option>
+                <option th:each="company : ${companies}" th:value="${company.id}" th:text="${company.name}"></option>
+            </select>
+        </div>
+        <hr/>
+        <h2>Ou Cadastre uma Nova Empresa</h2>
+        <div th:object="${newCompanyRequest}">
+            <div class="mb-3"><label class="form-label">Nome:</label><input type="text" class="form-control" th:field="*{name}" /></div>
+            <div class="mb-3"><label class="form-label">Email:</label><input type="email" class="form-control" th:field="*{email}" /></div>
+            <div class="mb-3"><label class="form-label">Telefone:</label><input type="text" class="form-control" th:field="*{phone}" /></div>
+            <div class="mb-3"><label class="form-label">CNPJ:</label><input type="text" class="form-control" th:field="*{cnpj}" /></div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Próximo Passo: Produtos</button>
+    </form>
+</div>
+</body>
+</html>

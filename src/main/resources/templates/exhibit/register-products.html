@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+  <h1>Registrar para Expor: Passo 2 de 3</h1>
+  <p class="lead" th:text="'Você está registrando produtos para a empresa: ' + ${companyName}"></p>
+  <hr/>
+
+  <h2>Produtos Atuais</h2>
+  <ul th:if="${!#lists.isEmpty(products)}">
+    <li th:each="product : ${products}" th:text="${product.name} + ' - R$ ' + ${product.price}"></li>
+  </ul>
+  <p th:if="${#lists.isEmpty(products)}">Nenhum produto cadastrado para esta empresa ainda.</p>
+
+  <hr/>
+  <h2>Adicionar Novo Produto</h2>
+  <form th:action="@{/exhibit/register/products}" th:object="${newProductRequest}" method="post" class="mb-3">
+    <div class="mb-3"><label class="form-label">Nome:</label><input type="text" class="form-control" th:field="*{name}" required/></div>
+    <div class="mb-3"><label class="form-label">Descrição:</label><input type="text" class="form-control" th:field="*{description}" required/></div>
+    <div class="mb-3"><label class="form-label">Preço:</label><input type="number" step="0.01" class="form-control" th:field="*{price}" required/></div>
+    <button type="submit" class="btn btn-secondary">Adicionar Produto</button>
+  </form>
+
+  <a th:href="@{/exhibit/register/confirm}" class="btn btn-primary">Próximo Passo: Confirmar</a>
+</div>
+</body>
+</html>

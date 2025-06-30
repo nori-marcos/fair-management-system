@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+  <h1>Registrar para Expor: Passo 3 de 3</h1>
+  <p class="lead">Por favor, revise os detalhes e confirme sua inscrição.</p>
+  <hr/>
+
+  <div class="card mb-4">
+    <div class="card-header">Resumo da Inscrição</div>
+    <div class="card-body">
+      <p><strong>Feira:</strong> <span th:text="${fairName}"></span></p>
+      <p><strong>Empresa:</strong> <span th:text="${companyName}"></span></p>
+    </div>
+  </div>
+
+  <form th:action="@{/exhibit/register/confirm}" th:object="${exhibitorRequest}" method="post">
+    <div class="mb-3">
+      <label for="contactName" class="form-label">Seu Nome de Contato para a Feira:</label>
+      <input type="text" id="contactName" class="form-control" th:field="*{contactName}" required/>
+    </div>
+    <button type="submit" class="btn btn-success">Confirmar Inscrição e Gerar Ingresso</button>
+  </form>
+</div>
+</body>
+</html>

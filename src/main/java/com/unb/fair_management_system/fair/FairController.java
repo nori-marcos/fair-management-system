@@ -45,7 +45,7 @@ public class FairController {
 
   @DeleteMapping("/{id}")
   @Operation(summary = "Delete a fair by ID")
-  public ResponseEntity<Void> delete(@PathVariable UUID id) {
+  public ResponseEntity<Void> delete(@PathVariable final UUID id) {
     return mediator.handle(id, Void.class);
   }
 }

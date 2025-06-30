@@ -39,7 +39,7 @@ public class ExhibitorController {
 
   @DeleteMapping("/{id}")
   @Operation(summary = "Delete an exhibitor by ID")
-  public ResponseEntity<Void> delete(@PathVariable UUID id) {
+  public ResponseEntity<Void> delete(@PathVariable final UUID id) {
     return mediator.handle(id, Void.class);
   }
 

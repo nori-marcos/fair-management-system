@@ -2,7 +2,7 @@ package com.unb.fair_management_system.company;
 
 import com.unb.fair_management_system.commons.EmptyRequest;
 import com.unb.fair_management_system.company.create.CreateCompanyRequest;
-import com.unb.fair_management_system.company.list.ListCompaniesResponse;
+import com.unb.fair_management_system.company.list.CompanyResponse;
 import com.unb.fair_management_system.company.update.UpdateCompanyRequest;
 import com.unb.fair_management_system.company.update.UpdateCompanyResponse;
 import com.unb.fair_management_system.starter.mediator.Mediator;
@@ -25,16 +25,16 @@ public class CompanyController {
 
   @PostMapping
   @Operation(summary = "Create a new company")
-  public ResponseEntity<UUID> create(@RequestBody final CreateCompanyRequest request) {
-    return mediator.handle(request, UUID.class);
+  public ResponseEntity<java.util.UUID> create(@RequestBody final CreateCompanyRequest request) {
+    return mediator.handle(request, java.util.UUID.class);
   }
 
   @GetMapping
   @Operation(summary = "List all companies")
-  public ResponseEntity<List<ListCompaniesResponse>> listAll() {
+  public ResponseEntity<List<CompanyResponse>> listAll() {
     return mediator.handle(
         new EmptyRequest(),
-        ResolvableType.forClassWithGenerics(List.class, ListCompaniesResponse.class));
+        ResolvableType.forClassWithGenerics(List.class, CompanyResponse.class));
   }
 
   @PutMapping
@@ -46,7 +46,7 @@ public class CompanyController {
 
   @DeleteMapping("/{id}")
   @Operation(summary = "Delete a company")
-  public ResponseEntity<Void> delete(@PathVariable final UUID id) {
+  public ResponseEntity<Void> delete(@PathVariable final java.util.UUID id) {
     return mediator.handle(id, Void.class);
   }
 }

@@ -3,7 +3,6 @@ package com.unb.fair_management_system.visitor;
 import com.unb.fair_management_system.commons.EmptyRequest;
 import com.unb.fair_management_system.starter.mediator.Mediator;
 import com.unb.fair_management_system.starter.swagger.GetApiResponses;
-import com.unb.fair_management_system.ticket.Ticket;
 import com.unb.fair_management_system.ticket.TicketResponse;
 import com.unb.fair_management_system.visitor.create.CreateVisitorRequest;
 import com.unb.fair_management_system.visitor.list.VisitorResponse;
@@ -13,7 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +52,7 @@ public class VisitorController {
   @Operation(summary = "Delete a visitor by ID")
   @GetApiResponses
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable final UUID id) {
+  public ResponseEntity<Void> delete(@PathVariable final java.util.UUID id) {
     return mediator.handle(id, Void.class);
   }
 }

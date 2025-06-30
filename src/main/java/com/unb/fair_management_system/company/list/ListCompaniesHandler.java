@@ -11,17 +11,17 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class ListCompaniesHandler implements Handler<EmptyRequest, List<ListCompaniesResponse>> {
+public class ListCompaniesHandler implements Handler<EmptyRequest, List<CompanyResponse>> {
 
   private final CompanyRepository companyRepository;
 
   @Override
-  public ResponseEntity<List<ListCompaniesResponse>> handle(final EmptyRequest request) {
-    final List<ListCompaniesResponse> companies =
+  public ResponseEntity<List<CompanyResponse>> handle(final EmptyRequest request) {
+    final List<CompanyResponse> companies =
         companyRepository.findAll().stream()
             .map(
                 company ->
-                    new ListCompaniesResponse(
+                    new CompanyResponse(
                         company.getId(),
                         company.getName(),
                         company.getEmail(),
