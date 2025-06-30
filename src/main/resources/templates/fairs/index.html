@@ -4,7 +4,7 @@
 
 <div th:fragment="content">
     <h1>Criar Nova Feira</h1>
-    <form class="mb-5" action="#" th:action="@{/web/fairs/create}" th:object="${newFairRequest}" method="post">
+    <form class="mb-5" action="#" th:action="@{/admin/fairs/create}" th:object="${newFairRequest}" method="post">
         <div class="mb-3">
             <label for="name" class="form-label">Nome</label>
             <input type="text" id="name" class="form-control" th:field="*{name}" required/>
