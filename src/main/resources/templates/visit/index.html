@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<body>
+<div th:fragment="content">
+    <div class="pb-2 mb-4 border-bottom">
+        <h1>Inscrever-se em Feiras</h1>
+        <p class="lead">Aqui você pode ver as feiras em que está inscrito como visitante e se inscrever em novas.</p>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <h2 class="mt-5">Minhas Inscrições</h2>
+    <div th:if="${subscribedFairs != null}">
+        <table class="table table-striped table-hover">
+            <thead class="table-success">
+            <tr>
+                <th>Nome da Feira</th>
+                <th>Localização</th>
+                <th>Data</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(subscribedFairs)}">
+                <td colspan="4" class="text-center">Você ainda não está inscrito em nenhuma feira.</td>
+            </tr>
+            <tr th:each="item : ${subscribedFairs}">
+                <td th:text="${item.fairDetails.name}"></td>
+                <td th:text="${item.fairDetails.location} + ', ' + ${item.fairDetails.city}"></td>
+                <td th:text="${#temporals.format(item.fairDetails.startDate, 'dd/MM/yyyy')} + ' - ' + ${#temporals.format(item.fairDetails.endDate, 'dd/MM/yyyy')}"></td>
+                <td><span class="badge bg-success rounded-pill">Inscrito</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <hr class="my-5"/>
+
+    <h2 class="mt-4">Feiras Disponíveis para Inscrição</h2>
+    <div th:if="${unsubscribedFairs != null}">
+        <table class="table table-striped table-hover">
+            <thead class="table-primary">
+            <tr>
+                <th>Nome da Feira</th>
+                <th>Localização</th>
+                <th>Data</th>
+                <th>Ação</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(unsubscribedFairs)}">
+                <td colspan="4" class="text-center">Não há novas feiras disponíveis para inscrição.</td>
+            </tr>
+            <tr th:each="item : ${unsubscribedFairs}">
+                <td th:text="${item.fairDetails.name}"></td>
+                <td th:text="${item.fairDetails.location} + ', ' + ${item.fairDetails.city}"></td>
+                <td th:text="${#temporals.format(item.fairDetails.startDate, 'dd/MM/yyyy')} + ' - ' + ${#temporals.format(item.fairDetails.endDate, 'dd/MM/yyyy')}"></td>
+                <td>
+                    <form th:action="@{/visit/subscribe}" method="post" class="d-inline">
+                        <input type="hidden" name="fairId" th:value="${item.fairDetails.id}"/>
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="fa-solid fa-ticket me-1"></i> Inscrever-se
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

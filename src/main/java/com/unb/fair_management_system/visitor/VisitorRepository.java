@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VisitorRepository extends JpaRepository<Visitor, UUID> {
   List<Visitor> findByUserId(UUID userId);
+
+  boolean existsByUserIdAndFairId(UUID userId, UUID fairId);
 }

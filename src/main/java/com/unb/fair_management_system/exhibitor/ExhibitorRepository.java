@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ExhibitorRepository extends JpaRepository<Exhibitor, UUID> {
   List<Exhibitor> findByUserId(UUID userId);
+
+  List<Exhibitor> findByFairId(UUID fairId);
 }
