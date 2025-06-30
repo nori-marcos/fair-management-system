@@ -2,9 +2,16 @@ package com.unb.fair_management_system.web;
 
 import com.unb.fair_management_system.authentication.user.User;
 import com.unb.fair_management_system.authentication.user.UserRepository;
+import com.unb.fair_management_system.exhibitor.Exhibitor;
+import com.unb.fair_management_system.exhibitor.ExhibitorRepository;
+import com.unb.fair_management_system.fair.Fair;
+import com.unb.fair_management_system.fair.FairRepository;
 import com.unb.fair_management_system.starter.mediator.Mediator;
 import com.unb.fair_management_system.ticket.TicketResponse;
+import com.unb.fair_management_system.visitor.Visitor;
+import com.unb.fair_management_system.visitor.VisitorRepository;
 import com.unb.fair_management_system.visitor.create.CreateVisitorRequest;
+import com.unb.fair_management_system.visitor.visitorflow.CompanyInFairResponse;
 import com.unb.fair_management_system.visitor.visitorflow.FairWithCompaniesResponse;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +37,9 @@ public class VisitorFlowController {
 
   private final Mediator mediator;
   private final UserRepository userRepository;
+  private final FairRepository fairRepository;
+  private final ExhibitorRepository exhibitorRepository;
+  private final VisitorRepository visitorRepository;
 
   @GetMapping("/fairs")
   public String showVisitorFairsPage(final Model model) {
@@ -67,6 +77,29 @@ public class VisitorFlowController {
     return "layout";
   }
 
+  @GetMapping("/fairs/{fairId}")
+  public String showFairDetails(@PathVariable final UUID fairId, final Model model) {
+    final Fair fair =
+        fairRepository
+            .findById(fairId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid fair Id:" + fairId));
+
+    final List<CompanyInFairResponse> companies =
+        exhibitorRepository.findByFairId(fair.getId()).stream()
+            .map(Exhibitor::getCompany)
+            .distinct()
+            .map(
+                company ->
+                    new CompanyInFairResponse(
+                        company.getId(), company.getName(), company.getEmail(), company.getPhone()))
+            .collect(Collectors.toList());
+
+    model.addAttribute("fair", fair);
+    model.addAttribute("companies", companies);
+    model.addAttribute("contentFragment", "visit/fair-details");
+    return "layout";
+  }
+
   @PostMapping("/subscribe")
   public String subscribeToFair(
       @RequestParam("fairId") final UUID fairId, final RedirectAttributes redirectAttributes) {
@@ -96,6 +129,32 @@ public class VisitorFlowController {
     model.addAttribute("ticketId", ticketId);
     model.addAttribute("contentFragment", "visit/ticket-confirmation");
     return "layout";
+  }
+
+  @PostMapping("/unsubscribe")
+  public String unsubscribeFromFair(
+      @RequestParam("fairId") final UUID fairId, final RedirectAttributes redirectAttributes) {
+    final User currentUser =
+        getCurrentUser().orElseThrow(() -> new IllegalStateException("User not found"));
+
+    final Optional<Visitor> visitorOpt =
+        visitorRepository.findByUserIdAndFairId(currentUser.getId(), fairId);
+
+    if (visitorOpt.isPresent()) {
+      try {
+        final UUID visitorId = visitorOpt.get().getId();
+        mediator.handle(visitorId, Void.class);
+        redirectAttributes.addFlashAttribute("successMessage", "Inscrição cancelada com sucesso!");
+      } catch (final Exception e) {
+        redirectAttributes.addFlashAttribute(
+            "errorMessage", "Erro ao cancelar inscrição: " + e.getMessage());
+      }
+    } else {
+      redirectAttributes.addFlashAttribute(
+          "errorMessage", "Inscrição não encontrada para cancelar.");
+    }
+
+    return "redirect:/visit/fairs";
   }
 
   private Optional<User> getCurrentUser() {

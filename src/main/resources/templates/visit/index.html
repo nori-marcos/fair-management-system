@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="content">
     <div class="pb-2 mb-4 border-bottom">
-        <h1>Visitar Feiras</h1>
+        <h1>Inscrever-se em Feiras</h1>
         <p class="lead">Aqui você pode ver as feiras em que está inscrito como visitante e se inscrever em novas.</p>
     </div>
 
@@ -19,17 +19,29 @@
                 <th>Localização</th>
                 <th>Data</th>
                 <th>Status</th>
+                <th>Ações</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(subscribedFairs)}">
-                <td colspan="4" class="text-center">Você ainda não está inscrito em nenhuma feira.</td>
+                <td colspan="5" class="text-center">Você ainda não está inscrito em nenhuma feira.</td>
             </tr>
             <tr th:each="item : ${subscribedFairs}">
                 <td th:text="${item.fairDetails.name}"></td>
                 <td th:text="${item.fairDetails.location} + ', ' + ${item.fairDetails.city}"></td>
                 <td th:text="${#temporals.format(item.fairDetails.startDate, 'dd/MM/yyyy')} + ' - ' + ${#temporals.format(item.fairDetails.endDate, 'dd/MM/yyyy')}"></td>
                 <td><span class="badge bg-success rounded-pill">Inscrito</span></td>
+                <td>
+                    <a th:href="@{/visit/fairs/{id}(id=${item.fairDetails.id})}" class="btn btn-sm btn-secondary">
+                        <i class="fa-solid fa-eye me-1"></i> Detalhes
+                    </a>
+                    <form th:action="@{/visit/unsubscribe}" method="post" class="d-inline">
+                        <input type="hidden" name="fairId" th:value="${item.fairDetails.id}"/>
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="fa-solid fa-times me-1"></i> Cancelar Inscrição
+                        </button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -45,7 +57,7 @@
                 <th>Nome da Feira</th>
                 <th>Localização</th>
                 <th>Data</th>
-                <th>Ação</th>
+                <th>Ações</th>
             </tr>
             </thead>
             <tbody>
@@ -57,6 +69,9 @@
                 <td th:text="${item.fairDetails.location} + ', ' + ${item.fairDetails.city}"></td>
                 <td th:text="${#temporals.format(item.fairDetails.startDate, 'dd/MM/yyyy')} + ' - ' + ${#temporals.format(item.fairDetails.endDate, 'dd/MM/yyyy')}"></td>
                 <td>
+                    <a th:href="@{/visit/fairs/{id}(id=${item.fairDetails.id})}" class="btn btn-sm btn-secondary">
+                        <i class="fa-solid fa-eye me-1"></i> Detalhes
+                    </a>
                     <form th:action="@{/visit/subscribe}" method="post" class="d-inline">
                         <input type="hidden" name="fairId" th:value="${item.fairDetails.id}"/>
                         <button type="submit" class="btn btn-sm btn-primary">
