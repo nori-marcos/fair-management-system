@@ -3,34 +3,41 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="pt-BR">
 <body>
 
-<div th:fragment="auth-links" class="d-flex align-items-center">
+<div th:fragment="auth-links">
 
-    <div sec:authorize="isAnonymous()">
-        <div class="btn-group me-3" role="group" aria-label="User Actions">
-            <a th:href="@{/login/user}" class="btn btn-outline-primary">
-                <i class="fa-solid fa-right-to-bracket me-1"></i> Login Usuário
+    <!-- ANONYMOUS VIEW -->
+    <div sec:authorize="isAnonymous()" class="d-flex flex-column flex-md-row gap-2">
+
+        <!-- User Actions -->
+        <div class="btn-group" role="group" aria-label="User Actions">
+            <a th:href="@{/login/user}" class="btn btn-outline-light">
+                <!-- The d-none d-md-inline classes hide the icon on mobile -->
+                <i class="fa-solid fa-right-to-bracket me-1 d-none d-md-inline"></i> Login Usuário
             </a>
-            <a th:href="@{/register/user}" class="btn btn-primary">
-                <i class="fa-solid fa-user-plus me-1"></i> Registrar Usuário
+            <a th:href="@{/register/user}" class="btn btn-light">
+                <i class="fa-solid fa-user-plus me-1 d-none d-md-inline"></i> Registrar Usuário
             </a>
         </div>
+
+        <!-- Admin Actions -->
         <div class="btn-group" role="group" aria-label="Admin Actions">
             <a th:href="@{/login/admin}" class="btn btn-outline-secondary">
-                <i class="fa-solid fa-user-shield me-1"></i> Login Admin
+                <i class="fa-solid fa-user-shield me-1 d-none d-md-inline"></i> Login Admin
             </a>
             <a th:href="@{/register/admin}" class="btn btn-secondary">
-                <i class="fa-solid fa-user-gear me-1"></i> Registrar Admin
+                <i class="fa-solid fa-user-gear me-1 d-none d-md-inline"></i> Registrar Admin
             </a>
         </div>
     </div>
 
+    <!-- AUTHENTICATED VIEW -->
     <div sec:authorize="isAuthenticated()" class="d-flex align-items-center">
-        <span class="navbar-text me-3">
+        <span class="navbar-text me-3 d-none d-md-inline">
             Bem-vindo, <strong sec:authentication="name">User</strong>
         </span>
         <form th:action="@{/logout}" method="post" class="d-inline">
             <button type="submit" class="btn btn-outline-light">
-                <i class="fa-solid fa-right-from-bracket me-1"></i>Logout
+                <i class="fa-solid fa-right-from-bracket me-1 d-none d-md-inline"></i>Logout
             </button>
         </form>
     </div>
