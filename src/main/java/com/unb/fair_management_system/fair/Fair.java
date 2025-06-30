@@ -1,13 +1,20 @@
 package com.unb.fair_management_system.fair;
 
+import com.unb.fair_management_system.exhibitor.Exhibitor;
+import com.unb.fair_management_system.visitor.Visitor;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,6 +54,12 @@ public class Fair {
 
   @Column(nullable = false)
   private LocalDateTime createdAt;
+
+  @OneToMany(mappedBy = "fair", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<Exhibitor> exhibitors = new ArrayList<>();
+
+  @OneToMany(mappedBy = "fair", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<Visitor> visitors = new ArrayList<>();
 
   @PrePersist
   public void prePersist() {
