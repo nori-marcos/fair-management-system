@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<div th:fragment="content">
+    <h1>Gerenciar Usuários e Acessos</h1>
+    <p class="lead">Visualize e remova as contas de usuários do sistema.</p>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nome Completo</th>
+                <th class="d-none d-md-table-cell">Email</th>
+                <th>Cargos (Roles)</th>
+                <th class="text-end">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(users)}">
+                <td colspan="4" class="text-center">Nenhum usuário cadastrado.</td>
+            </tr>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.fullName}"></td>
+                <td class="d-none d-md-table-cell" th:text="${user.email}"></td>
+                <td>
+                    <span th:each="role : ${user.roles}" class="badge bg-info me-1" th:text="${role.name}"></span>
+                </td>
+                <td class="text-end">
+                    <!-- Safety check: Prevent an admin from deleting their own account -->
+                    <form th:if="${#authentication.name != user.email}" th:action="@{/admin/users/delete/{id}(id=${user.id})}" method="post">
+                        <button type="submit" class="btn btn-sm btn-danger">Deletar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

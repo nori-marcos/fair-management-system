@@ -20,13 +20,28 @@
                     <a class="nav-link" th:href="@{/}">Home</a>
                 </li>
                 <li class="nav-item" th:if="${loginType == 'ADMIN'}">
-                    <a class="nav-link" th:href="@{/admin/dashboard}">Dashboard do Administrador</a>
+                    <a class="nav-link" th:href="@{/admin/dashboard}">Dashboard</a>
                 </li>
                 <li class="nav-item" th:if="${loginType == 'ADMIN'}">
-                    <a class="nav-link" th:href="@{/admin/fairs}">Gerir Feiras</a>
+                    <a class="nav-link" th:href="@{/admin/fairs}">Feiras</a>
+                </li>
+                <li class="nav-item" th:if="${loginType == 'ADMIN'}">
+                    <a class="nav-link" th:href="@{/admin/visitors}">Visitantes</a>
+                </li>
+                <li class="nav-item" th:if="${loginType == 'ADMIN'}">
+                    <a class="nav-link" th:href="@{/admin/companies}">Empresas</a>
+                </li>
+                <li class="nav-item" th:if="${loginType == 'ADMIN'}">
+                    <a class="nav-link" th:href="@{/admin/exhibitors}">Expositores</a>
+                </li>
+                <li class="nav-item" th:if="${loginType == 'ADMIN'}">
+                    <a class="nav-link" th:href="@{/admin/products}">Produtos</a>
+                </li>
+                <li class="nav-item" th:if="${loginType == 'ADMIN'}">
+                    <a class="nav-link" th:href="@{/admin/users}">Acessos</a>
                 </li>
                 <li class="nav-item" th:if="${loginType == 'USER'}">
-                    <a class="nav-link" th:href="@{/user/dashboard}">Dashboard do Usuário</a>
+                    <a class="nav-link" th:href="@{/user/dashboard}">Dashboard</a>
                 </li>
                 <li class="nav-item" th:if="${loginType == 'USER'}">
                     <a class="nav-link" th:href="@{/visit/fairs}">Visitar</a>

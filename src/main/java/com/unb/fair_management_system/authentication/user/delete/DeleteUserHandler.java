@@ -8,18 +8,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Component
-public class DeleteUserHandler implements Handler<String, Void> {
+public class DeleteUserHandler implements Handler<UUID, Void> {
 
   private final UserRepository userRepository;
 
   @Override
-  public ResponseEntity<Void> handle(final String email) {
+  public ResponseEntity<Void> handle(final UUID id) {
     final User user =
         userRepository
-            .findByEmail(email)
-            .orElseThrow(() -> new EntityNotFoundException("User not found: " + email));
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("User not found: " + id));
     userRepository.delete(user);
     return ResponseEntity.noContent().build();
   }

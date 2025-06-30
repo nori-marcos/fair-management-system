@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <h1>Gerenciar Produtos</h1>
+    <p class="lead">Visualize e remova os produtos cadastrados no sistema.</p>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th class="d-none d-md-table-cell">Empresa</th>
+                <th class="text-end">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(products)}">
+                <td colspan="4" class="text-center">Nenhum produto cadastrado.</td>
+            </tr>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.name}"></td>
+                <td th:text="${#numbers.formatCurrency(product.price)}"></td>
+                <td class="d-none d-md-table-cell" th:text="${product.company.name}"></td>
+                <td class="text-end">
+                    <form th:action="@{/admin/products/delete/{id}(id=${product.id})}" method="post">
+                        <button type="submit" class="btn btn-sm btn-danger">Deletar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

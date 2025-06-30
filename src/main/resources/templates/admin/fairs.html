@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <h1>Gerenciar Feiras</h1>
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <form class="mb-5 p-4 border rounded bg-light" th:action="@{/admin/fairs/create}" th:object="${newFairRequest}"
+          method="post">
+        <h2 class="h4 mb-3">Criar Nova Feira</h2>
+        <div class="mb-3">
+            <label for="name" class="form-label">Nome</label>
+            <input type="text" id="name" class="form-control" th:field="*{name}" required/>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Descrição</label>
+            <input type="text" id="description" class="form-control" th:field="*{description}" required/>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="startDate" class="form-label">Data de Início</label>
+                <input type="date" id="startDate" class="form-control" th:field="*{startDate}" required/>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="endDate" class="form-label">Data de Término</label>
+                <input type="date" id="endDate" class="form-control" th:field="*{endDate}" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3"><label for="location" class="form-label">Endereço</label><input type="text"
+                                                                                                       id="location"
+                                                                                                       class="form-control"
+                                                                                                       th:field="*{location}"
+                                                                                                       required/></div>
+            <div class="col-md-4 mb-3"><label for="city" class="form-label">Cidade</label><input type="text" id="city"
+                                                                                                 class="form-control"
+                                                                                                 th:field="*{city}"
+                                                                                                 required/></div>
+            <div class="col-md-4 mb-3"><label for="state" class="form-label">Estado</label><input type="text" id="state"
+                                                                                                  class="form-control"
+                                                                                                  th:field="*{state}"
+                                                                                                  required/></div>
+        </div>
+        <input type="hidden" th:field="*{createdBy}" />
+        <button type="submit" class="btn btn-primary mt-3">Criar Feira</button>
+    </form>
+
+    <hr/>
+
+    <h2 class="mt-5">Feiras Existentes</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th class="d-none d-md-table-cell">Local</th>
+                <th class="d-none d-md-table-cell">Data</th>
+                <th class="text-end">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(fairs)}">
+                <td colspan="4" class="text-center">Nenhuma feira cadastrada.</td>
+            </tr>
+            <tr th:each="fair : ${fairs}">
+                <td th:text="${fair.name}"></td>
+                <td class="d-none d-md-table-cell" th:text="${fair.location}"></td>
+                <td class="d-none d-md-table-cell" th:text="${#temporals.format(fair.startDate, 'dd/MM/yyyy')}"></td>
+                <td class="text-end">
+                    <form th:action="@{/admin/fairs/delete/{id}(id=${fair.id})}" method="post">
+                        <button type="submit" class="btn btn-sm btn-danger">Deletar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

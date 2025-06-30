@@ -6,9 +6,121 @@
     <div class="px-4 py-5 my-5 text-center">
         <h1 class="display-5 fw-bold">Dashboard do Administrador</h1>
         <div class="col-lg-6 mx-auto">
-            <p class="lead mb-4">Bem-vindo, <span sec:authentication="name">Admin</span>. <br> Aqui você gerencia as feiras e outras informações.</p>
+            <p class="lead mb-4">Bem-vindo, <strong sec:authentication="name">Admin</strong>. <br> Aqui você gerencia as
+                feiras e outras informações do sistema.</p>
         </div>
     </div>
+
+    <h2 class="pb-2 border-bottom">O que você gostaria de fazer?</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-3">
+
+        <!-- Card for Managing Fairs -->
+        <div class="col">
+            <a th:href="@{/admin/fairs}" class="card-link">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fa-solid fa-calendar-days fa-2x mb-3 text-primary"></i><br>Gerenciar
+                            Feiras</h5>
+                        <p class="card-text">
+                            Adicione novas feiras, edite eventos existentes e configure datas.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card for Managing Exhibitors -->
+        <div class="col">
+            <a th:href="@{/admin/exhibitors}" class="card-link">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fa-solid fa-store fa-2x mb-3 text-info"></i><br>Gerenciar
+                            Expositores</h5>
+                        <p class="card-text">
+                            Gerencie os expositores e suas participações nas feiras.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card for Managing Visitors -->
+        <div class="col">
+            <a th:href="@{/admin/visitors}" class="card-link">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fa-solid fa-users fa-2x mb-3 text-warning"></i><br>Gerenciar
+                            Visitantes</h5>
+                        <p class="card-text">
+                            Visualize e administre os visitantes inscritos nos eventos.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card for Managing Companies -->
+        <div class="col">
+            <a th:href="@{/admin/companies}" class="card-link">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fa-solid fa-building fa-2x mb-3 text-success"></i><br>Gerenciar
+                            Empresas</h5>
+                        <p class="card-text">
+                            Visualize e gerencie as empresas cadastradas no sistema.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card for Managing Products -->
+        <div class="col">
+            <a th:href="@{/admin/products}" class="card-link">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fa-solid fa-box-open fa-2x mb-3 text-danger"></i><br>Gerenciar
+                            Produtos</h5>
+                        <p class="card-text">
+                            Gerencie os produtos que os expositores podem cadastrar.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card for Managing Users -->
+        <div class="col">
+            <a th:href="@{/admin/users}" class="card-link">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><i class="fa-solid fa-users-cog fa-2x mb-3 text-secondary"></i><br>Gerenciar
+                            Acessos</h5>
+                        <p class="card-text">
+                            Gerencie os usuários do sistema, incluindo criação e remoção de contas.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
 </div>
+
+<!-- A little CSS to make the cards look better as links -->
+<style>
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .card-link:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+</style>
+
 </body>
 </html>
