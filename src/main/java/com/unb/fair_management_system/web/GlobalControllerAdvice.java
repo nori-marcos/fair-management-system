@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class GlobalControllerAdvice {
 
   @ModelAttribute("loginType")
-  public String getLoginType(HttpSession session) {
-    Object loginType = session.getAttribute("LOGIN_TYPE");
+  public String getLoginType(final HttpSession session) {
+    final Object loginType = session.getAttribute("LOGIN_TYPE");
     return loginType != null ? loginType.toString() : "NONE";
   }
 }

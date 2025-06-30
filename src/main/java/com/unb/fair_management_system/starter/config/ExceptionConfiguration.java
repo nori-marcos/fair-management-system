@@ -10,11 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @RestControllerAdvice
@@ -85,12 +88,23 @@ public class ExceptionConfiguration {
     return ResponseEntity.status(HttpStatus.valueOf(exception.getStatusCode().value())).build();
   }
 
+  @ExceptionHandler(NoResourceFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public String handleNoResourceFoundException(
+      final NoResourceFoundException exception, final Model model) {
+    log.warn("Resource not found for request: {}", exception.getResourcePath());
+    model.addAttribute("statusCode", HttpStatus.NOT_FOUND.value());
+    model.addAttribute("errorMessage", "A página que você está procurando não foi encontrada.");
+    model.addAttribute("isForbiddenError", false);
+    model.addAttribute("contentFragment", "custom-error");
+    return "layout";
+  }
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<String> handle(final Exception exception) {
     log.error(exception.getMessage(), exception);
-    final String errorMessage = exception.getCause() != null
-                              ? exception.getCause().getMessage()
-                              : exception.getMessage();
+    final String errorMessage =
+        exception.getCause() != null ? exception.getCause().getMessage() : exception.getMessage();
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
   }
 }

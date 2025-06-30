@@ -2,7 +2,6 @@ package com.unb.fair_management_system.web;
 
 import com.unb.fair_management_system.authentication.user.User;
 import com.unb.fair_management_system.authentication.user.UserRepository;
-import com.unb.fair_management_system.authentication.user.create.CreateUserRequest;
 import com.unb.fair_management_system.company.Company;
 import com.unb.fair_management_system.company.CompanyRepository;
 import com.unb.fair_management_system.company.create.CreateCompanyRequest;
@@ -10,16 +9,13 @@ import com.unb.fair_management_system.exhibitor.create.CreateExhibitorRequest;
 import com.unb.fair_management_system.exhibitor.fairStatus.ExhibitorFairStatusResponse;
 import com.unb.fair_management_system.fair.Fair;
 import com.unb.fair_management_system.fair.FairRepository;
-import com.unb.fair_management_system.fair.create.CreateFairRequest;
 import com.unb.fair_management_system.product.create.CreateProductRequest;
 import com.unb.fair_management_system.starter.mediator.Mediator;
 import com.unb.fair_management_system.ticket.TicketResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,156 +23,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequestMapping("/exhibit")
 @RequiredArgsConstructor
-public class WebController {
+public class ExhibitorWizardController {
 
   private final Mediator mediator;
   private final UserRepository userRepository;
   private final CompanyRepository companyRepository;
   private final FairRepository fairRepository;
 
-  @GetMapping("/")
-  public String home(final Model model) {
-    final List<Fair> fairs = fairRepository.findAll();
-    model.addAttribute("fairs", fairs);
-    model.addAttribute("contentFragment", "home");
-    return "layout";
-  }
-
-  // --- User Login and Registration ---
-  @GetMapping("/login/user")
-  public String userLoginPage(final Authentication authentication, final Model model) {
-    if (authentication != null && authentication.isAuthenticated()) {
-      return "redirect:/user/dashboard";
-    }
-    model.addAttribute("contentFragment", "user/login");
-    return "layout";
-  }
-
-  @GetMapping("/register/user")
-  public String userRegisterPage(final Model model) {
-    model.addAttribute("userRequest", new CreateUserRequest(null, null, null, null, null));
-    model.addAttribute("contentFragment", "user/register");
-    return "layout";
-  }
-
-  @PostMapping("/register/user")
-  public String processUserRegistration(
-      @ModelAttribute("userRequest") final CreateUserRequest formSubmission,
-      final RedirectAttributes redirectAttributes) {
-    try {
-      final var safeRequest =
-          new CreateUserRequest(
-              formSubmission.fullName(),
-              formSubmission.email(),
-              formSubmission.password(),
-              List.of("SELF"),
-              "self-registration");
-      mediator.handle(safeRequest, UUID.class);
-
-      redirectAttributes.addFlashAttribute(
-          "successMessage", "Cadastro realizado com sucesso! Por favor, faça o login.");
-      redirectAttributes.addFlashAttribute("username", formSubmission.email());
-      return "redirect:/login/user";
-
-    } catch (final IllegalStateException e) {
-      redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-      redirectAttributes.addFlashAttribute("userRequest", formSubmission);
-      return "redirect:/register/user";
-    }
-  }
-
-  // --- User Control ---
-  @GetMapping("/user/dashboard")
-  public String userDashboard(final Model model) {
-    model.addAttribute("contentFragment", "user/dashboard");
-    return "layout";
-  }
-
-  // --- Admin Login and Registration ---
-  @GetMapping("/login/admin")
-  public String adminLoginPage(final Authentication authentication, final Model model) {
-    if (authentication != null && authentication.isAuthenticated()) {
-      return "redirect:/admin/dashboard";
-    }
-    model.addAttribute("contentFragment", "admin/login");
-    return "layout";
-  }
-
-  @GetMapping("/register/admin")
-  public String adminRegisterPage(final Model model) {
-    model.addAttribute("userRequest", new CreateUserRequest(null, null, null, null, null));
-    model.addAttribute("contentFragment", "admin/register");
-    return "layout";
-  }
-
-  @PostMapping("/register/admin")
-  public String processAdminRegistration(
-      @ModelAttribute("userRequest") final CreateUserRequest formSubmission,
-      final RedirectAttributes redirectAttributes) {
-    try {
-      final var safeRequest =
-          new CreateUserRequest(
-              formSubmission.fullName(),
-              formSubmission.email(),
-              formSubmission.password(),
-              List.of("ADMIN", "ORGANIZER"),
-              "admin-registration");
-      mediator.handle(safeRequest, UUID.class);
-
-      redirectAttributes.addFlashAttribute(
-          "successMessage", "Cadastro de admin realizado com sucesso! Por favor, faça o login.");
-      redirectAttributes.addFlashAttribute("username", formSubmission.email());
-      return "redirect:/login/admin";
-
-    } catch (final IllegalStateException e) {
-      redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-      redirectAttributes.addFlashAttribute("userRequest", formSubmission);
-      return "redirect:/register/admin";
-    }
-  }
-
-  // --- Admin Control ---
-  @GetMapping("/admin/dashboard")
-  public String adminDashboard(final Model model) {
-    model.addAttribute("contentFragment", "admin/dashboard");
-    return "layout";
-  }
-
-  @GetMapping("/admin/fairs")
-  public String listFairs(final Model model) {
-    final List<Fair> fairs = fairRepository.findAll();
-    model.addAttribute("fairs", fairs);
-    model.addAttribute(
-        "newFairRequest", new CreateFairRequest(null, null, null, null, null, null, null, null));
-    model.addAttribute("contentFragment", "fairs/index");
-    return "layout";
-  }
-
-  @PostMapping("/admin/fairs/create")
-  public String createFair(
-      @ModelAttribute("newFairRequest") final CreateFairRequest newFairRequest) {
-    final var request =
-        new CreateFairRequest(
-            newFairRequest.name(),
-            newFairRequest.description(),
-            newFairRequest.startDate(),
-            newFairRequest.endDate(),
-            newFairRequest.location(),
-            newFairRequest.city(),
-            newFairRequest.state(),
-            "web-interface");
-    mediator.handle(request, UUID.class);
-    return "redirect:/admin/fairs";
-  }
-
-  // --- EXHIBITOR WIZARD ---
-
-  @GetMapping("/exhibit/fairs")
+  @GetMapping("/fairs")
   public String showExhibitParticipationPage(final Model model) {
     final User currentUser =
         getCurrentUser()
@@ -191,7 +52,7 @@ public class WebController {
     return "layout";
   }
 
-  @GetMapping("/exhibit/register/company")
+  @GetMapping("/register/company")
   public String showCompanyStep(
       @RequestParam("fairId") final UUID fairId, final HttpSession session, final Model model) {
     session.setAttribute("wizard_fairId", fairId);
@@ -201,7 +62,7 @@ public class WebController {
     return "layout";
   }
 
-  @PostMapping("/exhibit/register/company")
+  @PostMapping("/register/company")
   public String handleCompanyStep(
       @RequestParam(value = "companyId", required = false) final UUID companyId,
       @ModelAttribute("newCompanyRequest") final CreateCompanyRequest newCompanyRequest,
@@ -223,8 +84,7 @@ public class WebController {
                   newCompanyRequest.email(),
                   newCompanyRequest.phone(),
                   newCompanyRequest.cnpj(),
-                  currentUser.getEmail() // Set createdBy with the user's email
-                  );
+                  currentUser.getEmail());
 
           companyToUse = mediator.handle(safeCompanyRequest, UUID.class).getBody();
         } catch (final Exception e) {
@@ -245,11 +105,11 @@ public class WebController {
     return "redirect:/exhibit/register/products";
   }
 
-  @GetMapping("/exhibit/register/products")
+  @GetMapping("/register/products")
   public String showProductsStep(final HttpSession session, final Model model) {
     final UUID companyId = (UUID) session.getAttribute("wizard_companyId");
     if (companyId == null) {
-      return "redirect:/exhibit/fairs"; // Protect state
+      return "redirect:/exhibit/fairs";
     }
     final Company company = companyRepository.findById(companyId).orElseThrow();
     model.addAttribute("companyName", company.getName());
@@ -259,7 +119,7 @@ public class WebController {
     return "layout";
   }
 
-  @PostMapping("/exhibit/register/products")
+  @PostMapping("/register/products")
   public String handleAddProduct(
       @ModelAttribute("newProductRequest") final CreateProductRequest newProductRequest,
       final HttpSession session) {
@@ -275,7 +135,7 @@ public class WebController {
     return "redirect:/exhibit/register/products";
   }
 
-  @GetMapping("/exhibit/register/confirm")
+  @GetMapping("/register/confirm")
   public String showConfirmStep(final HttpSession session, final Model model) {
     final UUID fairId = (UUID) session.getAttribute("wizard_fairId");
     final UUID companyId = (UUID) session.getAttribute("wizard_companyId");
@@ -295,7 +155,7 @@ public class WebController {
     return "layout";
   }
 
-  @PostMapping("/exhibit/register/confirm")
+  @PostMapping("/register/confirm")
   public String handleConfirmStep(
       @ModelAttribute("exhibitorRequest") final CreateExhibitorRequest exhibitorRequest,
       final HttpSession session) {
@@ -318,14 +178,13 @@ public class WebController {
     return "redirect:/exhibit/ticket/" + ticket.getId();
   }
 
-  @GetMapping("/exhibit/ticket/{ticketId}")
+  @GetMapping("/ticket/{ticketId}")
   public String showTicket(@PathVariable final UUID ticketId, final Model model) {
     model.addAttribute("ticketId", ticketId);
     model.addAttribute("contentFragment", "exhibit/ticket-confirmation");
     return "layout";
   }
 
-  // Helper to get current user
   private Optional<User> getCurrentUser() {
     final String username = SecurityContextHolder.getContext().getAuthentication().getName();
     return userRepository.findByEmail(username);
