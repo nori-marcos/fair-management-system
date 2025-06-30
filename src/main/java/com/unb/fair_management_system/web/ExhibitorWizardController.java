@@ -5,6 +5,8 @@ import com.unb.fair_management_system.authentication.user.UserRepository;
 import com.unb.fair_management_system.company.Company;
 import com.unb.fair_management_system.company.CompanyRepository;
 import com.unb.fair_management_system.company.create.CreateCompanyRequest;
+import com.unb.fair_management_system.exhibitor.Exhibitor;
+import com.unb.fair_management_system.exhibitor.ExhibitorRepository;
 import com.unb.fair_management_system.exhibitor.create.CreateExhibitorRequest;
 import com.unb.fair_management_system.exhibitor.fairStatus.ExhibitorFairStatusResponse;
 import com.unb.fair_management_system.fair.Fair;
@@ -12,10 +14,17 @@ import com.unb.fair_management_system.fair.FairRepository;
 import com.unb.fair_management_system.product.create.CreateProductRequest;
 import com.unb.fair_management_system.starter.mediator.Mediator;
 import com.unb.fair_management_system.ticket.TicketResponse;
+import com.unb.fair_management_system.visitor.VisitorRepository;
+import com.unb.fair_management_system.visitor.visitorflow.CompanyInFairResponse;
+import com.unb.fair_management_system.visitor.visitorflow.FairWithCompaniesResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ResolvableType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +45,7 @@ public class ExhibitorWizardController {
   private final UserRepository userRepository;
   private final CompanyRepository companyRepository;
   private final FairRepository fairRepository;
+  private final ExhibitorRepository exhibitorRepository;
 
   @GetMapping("/fairs")
   public String showExhibitParticipationPage(final Model model) {
@@ -49,6 +59,29 @@ public class ExhibitorWizardController {
     model.addAttribute("subscribedFairs", response.subscribedFairs());
     model.addAttribute("unsubscribedFairs", response.unsubscribedFairs());
     model.addAttribute("contentFragment", "exhibit/index");
+    return "layout";
+  }
+
+  @GetMapping("/fairs/{fairId}")
+  public String showFairDetails(@PathVariable UUID fairId, Model model) {
+    final Fair fair =
+        fairRepository
+            .findById(fairId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid fair Id:" + fairId));
+
+    final List<CompanyInFairResponse> companies =
+        exhibitorRepository.findByFairId(fair.getId()).stream()
+            .map(Exhibitor::getCompany)
+            .distinct()
+            .map(
+                company ->
+                    new CompanyInFairResponse(
+                        company.getId(), company.getName(), company.getEmail(), company.getPhone()))
+            .collect(Collectors.toList());
+
+    model.addAttribute("fair", fair);
+    model.addAttribute("companies", companies);
+    model.addAttribute("contentFragment", "visit/fair-details");
     return "layout";
   }
 
